@@ -25,7 +25,7 @@ public class EvilVisitors : Event {
 		if (Party.PartyContains(new FootballPlayer()) >= 0) {
 			options3 = new LinkedList<TimedMethod>();
 			options3.AddLast(new TimedMethod(0, "CauseEvent", new object[] {new TextEvent(Party.members[
-			    Party.PartyContains(new FootballPlayer())].ToString() + "'s presenc alone sends them running in terror")}));
+			    Party.PartyContains(new FootballPlayer())].ToString() + "'s presence alone sends them running in terror")}));
 			optionText3 = "Football Player: Intimidate them";
 		}
 		if (Party.ContainsQuirk(new Vengeful(null)) >= 0) {

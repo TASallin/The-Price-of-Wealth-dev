@@ -32,10 +32,12 @@ public static class Attacks {
 			//targ.SetHealth(targ.GetHealth() - damage);
 		    targ.Damage(damage);
 			audioPart = new TimedMethod(0, "AudioAfter", new object[] {audio, delay}); 
-			text = targ.ToString() + " takes " + damage.ToString() + " damage";
+			//text = targ.ToString() + " takes " + damage.ToString() + " damage";
+			text = damage.ToString();
 			if (targ.GetHealth() <= 0) {
 				//targ.SetHealth(0);
-				text = targ.ToString() + " takes " + damage.ToString() + " critical damage";
+				//text = targ.ToString() + " takes " + damage.ToString() + " critical damage";
+				text = "CRIT " + damage.ToString();
 			}
 			targ.SetGuard(0);
 			if (accuracy < System.Int32.MaxValue) {
@@ -49,7 +51,7 @@ public static class Attacks {
 		if (consumeCharge) {
 		    atkr.SetCharge(0);
 		}
-		return new TimedMethod[] {audioPart, new TimedMethod(60, "Log", new object[] {text})};
+		return new TimedMethod[] {audioPart, new TimedMethod(60, "CharLog", new object[] {text, targ.partyIndex})};
 	}
 	
 	public static bool EvasionCycle(int accuracy, Character targ) {

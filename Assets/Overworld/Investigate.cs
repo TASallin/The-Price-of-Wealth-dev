@@ -66,7 +66,7 @@ public static class Investigate {
 		if (index < events.Count) {
 			current = events[index];
 	        indexes[location]++;
-			Time.Increment(1);
+			Time.Increment();
 		} else {
 			current = new TextEvent("This area has been cleared out");
 		}

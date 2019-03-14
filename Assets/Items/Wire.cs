@@ -7,7 +7,7 @@ public class Wire : Item {
 			Status.NullifyDefense(Party.GetEnemy());
 		}
 		Attacks.SetAudio("Shock", 10);
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Small Swing"}), new TimedMethod(60, "StagnantAttack", new object[] {
+		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Small Swing"}), new TimedMethod(0, "StagnantAttack", new object[] {
 			true, Party.GetPlayer().GetStrength(), Party.GetPlayer().GetStrength() + 2, Party.GetPlayer().GetAccuracy(), true, true, false})};
 	}
 }

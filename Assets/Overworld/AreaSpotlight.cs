@@ -10,6 +10,7 @@ public class AreaSpotlight : MonoBehaviour {
 	public GameObject map;
 	public Text currentName;
 	public Button shop;
+	public Button investigate;
 	// Use this for initialization
 	void Start () {
 		
@@ -30,9 +31,11 @@ public class AreaSpotlight : MonoBehaviour {
 		currentName.text = location;
 		if (Areas.cleared[location]) {
 			shop.gameObject.SetActive(true);
+			investigate.gameObject.SetActive(true);
 			Areas.currentShop = Areas.shops[location];
 		} else {
 			shop.gameObject.SetActive(false);
+			investigate.gameObject.SetActive(false);
 		}
 	}
 	

@@ -5,6 +5,7 @@ public class RoomNode : MonoBehaviour {
 	
 	public bool cleared;
 	public string ID;
+	public string description;
 	public Event contents;
 	public Vector3 position;
     
@@ -29,6 +30,14 @@ public class RoomNode : MonoBehaviour {
 	public void FullClear () {
 		cleared = true;
 		contents = null;
+	}
+	
+	public void Hover () {
+		gameObject.transform.parent.gameObject.GetComponent<MapViewer>().mapText.text = description;
+	}
+	
+	public void ExitHover () {
+		gameObject.transform.parent.gameObject.GetComponent<MapViewer>().mapText.text = "";
 	}
 	
 }

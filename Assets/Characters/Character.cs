@@ -49,6 +49,7 @@ public class Character {
 	public Item[] drops;
 	//Attack description
 	public string attackEffect;
+	public int partyIndex;
 	
 	//This constructor is usually unused
 	public Character(int health, int maxHP, int strength, int accuracy,

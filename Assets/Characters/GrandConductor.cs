@@ -50,7 +50,7 @@ public class GrandConductor : Conductor {
 	public TimedMethod[] Piano() {
 		foreach (Character c in Party.enemies) {
 			if (c != null && c.GetAlive()) {
-				c.Heal(6);
+				c.Heal(3);
 			}
 		}
 		return new TimedMethod[] { new TimedMethod(0, "Audio", new object[] {"Piano"}),
@@ -60,7 +60,7 @@ public class GrandConductor : Conductor {
 	public TimedMethod[] Allegro() {
 		foreach (Character c in Party.enemies) {
 			if (c != null && c.GetAlive()) {
-				c.GainEvasion(8); c.GainAccuracy(1);
+				c.GainEvasion(5); c.GainAccuracy(1);
 			}
 		}
 		return new TimedMethod[] { new TimedMethod(0, "Audio", new object[] {"Allegro"}),
@@ -70,7 +70,7 @@ public class GrandConductor : Conductor {
 	public TimedMethod[] Largo() {
 		foreach (Character c in Party.enemies) {
 			if (c != null && c.GetAlive()) {
-				c.GainGuard(5); c.GainDefense(1);
+				c.GainGuard(3); c.GainDefense(1);
 			}
 		}
 		return new TimedMethod[] { new TimedMethod(0, "Audio", new object[] {"Violin"}),

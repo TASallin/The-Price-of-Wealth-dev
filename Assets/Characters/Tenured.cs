@@ -65,7 +65,7 @@ public class Tenured : Instructor {
 			Status.NullifyAttack(Party.GetPlayer()); Status.NullifyDefense(Party.GetPlayer());
 		} else {
 		    return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Blah"}), new TimedMethod(0, "Audio", new object[] {"Filibuster"}),
-			    new TimedMethod(60, "Log", new object[] {"It went over your head"})};
+			    new TimedMethod(60, "Log", new object[] {ToString() + " lectured. It went over your head"})};
 		}
 		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Blah"}), new TimedMethod(0, "Audio", new object[] {"Filibuster"}),
 		    new TimedMethod(60, "Log", new object[] {ToString() + " lectured"}), sleepPart[0], sleepPart[1]};

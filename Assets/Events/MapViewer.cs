@@ -11,6 +11,7 @@ public class MapViewer : MonoBehaviour {
 	public Event current;
 	public GameObject edgeLine;
 	public Transform edgeSpace;
+	public Text mapText;
 	
 	void Start () {
 		UpdateMap();

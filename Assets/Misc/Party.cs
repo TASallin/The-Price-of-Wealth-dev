@@ -138,6 +138,7 @@ public static class Party {
 		for (int i = 0; i < 4; i++) {
 			if (members[i] == null || !members[i].GetAlive()) {
 				c.SetPlayer(true);
+				c.partyIndex = i;
 				members[i] = c;
 				added = true;
 				playerCount++;
@@ -155,6 +156,7 @@ public static class Party {
 		for (int i = 0; i < 4; i++) {
 			if (enemies[i] == null || !enemies[i].GetAlive()) {
 				enemies[i] = c;
+				c.partyIndex = 4 + i;
 				enemyCount++;
 				if (turn > 0) {
 					c.GetPassive().Initialize(false);
@@ -286,8 +288,8 @@ public static class Party {
 			} else {
 				//members[playerSlot - 1] = null;
 				//members[playerSlot - 1].SetAlive(false);
-				Switch(1, true);
-				return new TimedMethod[] {new TimedMethod(60, "PartyDeath", new object[] {dead})};
+				//Switch(1, true);
+				return new TimedMethod[] {new TimedMethod(0, "SwitchTo", new object[] {1}), new TimedMethod(60, "PartyDeath", new object[] {dead})};
 			}
 		} else if (GetEnemy().GetHealth() <= 0) {
 			Character dead = GetEnemy();

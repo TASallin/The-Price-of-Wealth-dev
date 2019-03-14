@@ -14,8 +14,8 @@ public class Democracy : Passive {
 		} else if (promise == 1 && attacked) {
 			promise--;
 		} else if (promise == 1) {
-			self.SetPower(self.GetPower() - 4);
-			self.SetDefense(self.GetDefense() - 4);
+			self.GainPower(-4);
+			self.GainDefense(-4);
 			promise--;
 			self.GetSpecial().modifier += 10;
 			promisePart = new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"The promise was broken! power and defense -4"})};

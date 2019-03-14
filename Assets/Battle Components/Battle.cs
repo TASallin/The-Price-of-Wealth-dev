@@ -616,6 +616,10 @@ public class Battle : MonoBehaviour {
 	    messageLog.SendMessage("SetMessage", message);	
 	}
 	
+	public void CharLog (string message, int index) {
+		sprites.GetComponent<CharSprites>().Log(message, index);
+	}
+	
 	public void PartyDeath(Character dead) {
 	    string message = dead.ToString() + " was defeated. Your champion was sent out";
 		messageLog.SendMessage("SetMessage", message);

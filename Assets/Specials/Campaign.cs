@@ -7,8 +7,8 @@ public class Campaign : Special {
 	
 	public override TimedMethod[] Use () {
 		Character self = Party.GetPlayer();
-		self.SetPower(self.GetPower() + 1); self.SetDefense(self.GetDefense() + 1);
-		self.SetCharge(self.GetCharge() + 2); self.SetGuard(self.GetGuard() + 2);
+		self.GainPower(1); self.GainDefense(1);
+		self.GainCharge(2); self.GainGuard(2);
 		Democracy castPassive = (Democracy)self.GetPassive();
 		if (castPassive.promise == 0) {
 			castPassive.promise = 2;

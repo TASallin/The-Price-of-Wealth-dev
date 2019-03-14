@@ -8,7 +8,7 @@ public class Timekeeper : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		sun.transform.localPosition = new Vector3(System.Math.Min(Time.timeUnit, 100) / 2 - 50,
+		sun.transform.localPosition = new Vector3(System.Math.Min(Time.timeUnit, 100) - 50,
     		sun.transform.localPosition.y, sun.transform.localPosition.z);
 	}
 	

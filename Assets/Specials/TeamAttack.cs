@@ -1,6 +1,6 @@
 public class TeamAttack : Special {
 	
-    public TeamAttack() {name = "Team Attack"; description = "Each party member makes an attack, if not stunned/asleep/gooped/apathetic";
+    public TeamAttack() {name = "Team Attack"; description = "Each party member makes an attack, if not stunned, asleep, gooped, or apathetic";
     	baseCost = 7; modifier = 0;}
 	
 	public override TimedMethod[] UseSupport (int i) {

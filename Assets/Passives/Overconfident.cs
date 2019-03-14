@@ -7,13 +7,13 @@ public class Overconfident : Quirk {
 	public override TimedMethod[] Check(bool player) {
 		if (powered && self.GetHealth() < self.GetMaxHP()) {
 			powered = false;
-			self.SetPower(self.GetPower() - 3);
-			self.SetDefense(self.GetDefense() - 2);
+			self.GainPower(-3);
+			self.GainDefense(-2);
 			return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {self.ToString() + " is giving up"})};
 		} else if (!powered && self.GetHealth() == self.GetMaxHP()) {
 			powered = true;
-			self.SetPower(self.GetPower() + 3);
-			self.SetDefense(self.GetDefense() + 2);
+			self.GainPower(3);
+			self.GainDefense(2);
 			return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {self.ToString() + " has extreme confidence"})};
 		} else {
 			return new TimedMethod[0];

@@ -1236,6 +1236,8 @@ MonoBehaviour:
   StandardS: {fileID: 0}
   SupportS: {fileID: 0}
   active: 0
+  replacing: 0
+  dungeon: {fileID: 0}
 --- !u!1 &263369951
 GameObject:
   m_ObjectHideFlags: 0
@@ -2439,6 +2441,7 @@ MonoBehaviour:
   map: {fileID: 1329663971}
   currentName: {fileID: 296623580}
   shop: {fileID: 675975649}
+  investigate: {fileID: 668032478}
 --- !u!1 &472015393
 GameObject:
   m_ObjectHideFlags: 0
@@ -2648,6 +2651,8 @@ MonoBehaviour:
   StandardS: {fileID: 330395950}
   SupportS: {fileID: 2123266348}
   active: 0
+  replacing: 0
+  dungeon: {fileID: 1866598606}
 --- !u!1001 &539741314
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8396,7 +8401,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1866598606}
-        m_MethodName: CloseItem
+        m_MethodName: CloseBag
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10497,7 +10502,9 @@ MonoBehaviour:
   useItemMenu: {fileID: 226969661}
   nameMenu: {fileID: 1168794692}
   dungeonMaps: {fileID: 1388024085}
+  replaceMember: {fileID: 0}
   isEvent: 1
+  usingSpecial: 0
   y: 0
   partyIndex: 0
 --- !u!1001 &1927051018
@@ -11197,17 +11204,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 226969663}
-        m_MethodName: UseItem
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1866598606}
         m_MethodName: ConfirmItemUse
         m_Mode: 1

@@ -56,7 +56,7 @@ public class PsychMajor : Character {
 		} else {
 			sleepPart = new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"And nothing happened"}), new TimedMethod("Null")};
 		}
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skill1"}), new TimedMethod(0, "Audio", new object[] {"Hypnotize"}),
+		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skill1"}), new TimedMethod(0, "Audio", new object[] {"Hypnosis"}),
 		    new TimedMethod(60, "Log", new object[] {ToString() + " let the pendulum sway"}), sleepPart[0], sleepPart[1]};
 	}
 	

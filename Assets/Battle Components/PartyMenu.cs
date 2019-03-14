@@ -23,6 +23,7 @@ public class PartyMenu : MonoBehaviour {
 	public Item item;
 	public Special currentSpecial;
 	public bool replacing;
+	public Dungeon dungeon;
 	
 	// Use this for initialization
 	void Start () {
@@ -99,8 +100,9 @@ public class PartyMenu : MonoBehaviour {
 		} else {
 			status.text = Party.GetEnemy(i - 5).StatusE();
 		}
-		if (i < 5 && (Party.members[i - 1].GetSpecial().usableOut || Party.members[i - 1].GetSupportSpecial().usableOut) && 
-		    Party.GetSP() >= Party.members[i-1].GetSpecial().GetCost()) {
+		if (i < 5 && ((Party.members[i - 1].GetSpecial().usableOut && 
+		    Party.GetSP() >= Party.members[i-1].GetSpecial().GetCost()) || (Party.members[i - 1].GetSupportSpecial().usableOut && 
+		        Party.GetSP() >= Party.members[i-1].GetSupportSpecial().GetCost()))) {
 			special.interactable = true;
 		} else {
 			special.interactable = false;
@@ -152,9 +154,17 @@ public class PartyMenu : MonoBehaviour {
 	
 	public void Special () {
 	    if (Party.members[active - 1].GetSpecial().usableOut && !Party.members[active - 1].GetSupportSpecial().usableOut) {
+			if (Party.members[active - 1].GetSpecial().selects) {
+				dungeon.OpenSpecial(Party.members[active - 1].GetSupportSpecial());
+				return;
+			}
 		    Party.members[active - 1].GetSpecial().UseOutOfCombat();
 			CloseParty();
 		} else if (!Party.members[active - 1].GetSpecial().usableOut && Party.members[active - 1].GetSupportSpecial().usableOut) {
+			if (Party.members[active - 1].GetSupportSpecial().selects) {
+				dungeon.OpenSpecial(Party.members[active - 1].GetSupportSpecial());
+				return;
+			}
 			Party.members[active - 1].GetSupportSpecial().UseOutOfCombat();
 			CloseParty();
 		} else {

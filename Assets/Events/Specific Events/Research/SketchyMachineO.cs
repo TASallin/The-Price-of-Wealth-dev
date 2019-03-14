@@ -27,7 +27,7 @@ public class SketchyMachineO : Event {
 			contents[1] = dexterity;
 			result = result + "dexterity by 1";
 		}
-		contents[0] = new TimedMethod(0, "CauseEvent", new object[] {new TextEvent(result)});
+		contents[2] = new TimedMethod(0, "CauseEvent", new object[] {new TextEvent(result)});
 		options1.AddLast(new TimedMethod(0, "CauseEvent", new object[] {new SelectMember("Who will be altered?", contents)}));
 		optionText1 = "Send someone to the machine";
 		options2 = new LinkedList<TimedMethod>();

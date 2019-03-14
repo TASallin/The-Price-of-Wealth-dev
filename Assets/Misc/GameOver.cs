@@ -9,6 +9,7 @@ public class GameOver : MonoBehaviour {
 	public GameObject start;
 	public GameObject selectCharacter;
 	public GameObject enterName;
+	public InputField nameDisplay;
 	
 	// Use this for initialization
 	void Start () {
@@ -90,6 +91,7 @@ public class GameOver : MonoBehaviour {
 	}
 	
 	public void ToName () {
+		nameDisplay.text = Party.GetPlayer().GetName();
 		selectCharacter.SetActive(false);
 		enterName.SetActive(true);
 	}

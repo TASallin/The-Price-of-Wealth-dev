@@ -57,4 +57,8 @@ public class CharSprites : MonoBehaviour {
 			Switch(a + 3, b + 3);
 		}
 	}
+	
+	public void Log(string message, int index) {
+		sprites[index].GetComponent<CharSprite>().Log(message);
+	}
 }

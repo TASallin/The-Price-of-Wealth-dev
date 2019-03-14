@@ -7,10 +7,10 @@ public class WinGameEvent : Event {
 	}
 	
 	public override void Enact() {
-		text = "You Win! But there's no win screen so the game will keep playing";
+		text = "You have defeated the creator of the hypnotizing drug, and now the machine creating it is destroyed";
 		options1 = new LinkedList<TimedMethod>();
-		options1.AddLast(new TimedMethod("Resolve"));
-		optionText1 = "Yay";
+		options1.AddLast(new TimedMethod("Win"));
+		optionText1 = "Win";
 	}
 	
 }

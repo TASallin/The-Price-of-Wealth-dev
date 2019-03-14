@@ -10,7 +10,7 @@ public class DefeatDepower : Passive {
 		if (previousCount > count) {
 			foreach (Character c in team) {
 				if (c != null && c.GetAlive()) {
-					c.SetPower(c.GetPower() - 4 * (previousCount - count));
+					c.GainPower(-4 * (previousCount - count));
 				}
 			}
 		    previousCount = count;

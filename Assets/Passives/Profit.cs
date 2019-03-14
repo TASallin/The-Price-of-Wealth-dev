@@ -3,7 +3,7 @@ public class Profit : Passive {
 	public Profit (Character c) {self = c; name = "Profit"; description = "When an item is used, gain 1 power at the top of the round";}
 	
 	public override TimedMethod[] Check(bool player) {
-		self.SetPower(self.GetPower() + Party.usedItems);
+		self.GainPower(Party.usedItems);
 		return new TimedMethod[0];
 	}
 	

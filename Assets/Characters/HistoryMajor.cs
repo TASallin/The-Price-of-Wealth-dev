@@ -37,7 +37,7 @@ public class HistoryMajor : Character {
 	
 	public TimedMethod[] Sword () {
 		Attacks.SetAudio("Sword", 15);
-		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " Swung the actual sword"}),
+		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " swung the actual sword"}),
 		    new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 3, 4}),  new TimedMethod(0, "Audio", new object[] {"Big Swing"}),
 		    new TimedMethod(0, "Attack", new object[] {false})};
 	}
@@ -46,7 +46,7 @@ public class HistoryMajor : Character {
 		int amount = new System.Random().Next(4, 9);
 		guard += amount;
 		Attacks.SetAudio("Metal Hit", 20);
-		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " Shield bashed"}),
+		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " shield bashed"}),
 		    new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 3, 4}),  new TimedMethod(0, "Audio", new object[] {"Big Swing"}),
 		    new TimedMethod(0, "StagnantAttack", new object[] {false, 1, 3, GetAccuracy(), true, true, false})};
 	}
@@ -59,7 +59,7 @@ public class HistoryMajor : Character {
 			}
 		}
 		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skill2"}),  new TimedMethod(0, "Audio", new object[] {"Metal Hit"}),
-		    new TimedMethod(60, "Log", new object[] {ToString() + " Implemented tactics. Party's" 
+		    new TimedMethod(60, "Log", new object[] {ToString() + " Implemented tactics. Party's " 
 		    + "evasion and accuracy increased"})};
 	}
 
