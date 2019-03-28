@@ -73,7 +73,8 @@ public class DanceMajor : Character {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Dance Major - Of everyone we could encounter, they seem to be the hardest to hit",
+		return new string[] {"Dance Major - This is a legit major",
+            "Of everyone we could encounter, they seem to be the hardest to hit",
 		    "They gain evasion with each passing turn. They can also convert it into attack power"};
 	}
 }

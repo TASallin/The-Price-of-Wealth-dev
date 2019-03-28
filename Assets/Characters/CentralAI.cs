@@ -71,7 +71,7 @@ public class CentralAI : SecurityHologram {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Central AI - Like a regular hologram, wired to a room with a disintegration gun",
+		return new string[] {"Central AI - Cortana but wired to a room with a disintegration gun",
 		    "Keep an eye on its energy level for when it will use the big attack"};
 	}
 }

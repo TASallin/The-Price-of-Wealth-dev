@@ -101,7 +101,7 @@ public class Chef : Character {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Chef - They cook things, obviously. Their food has a variety of nasty effects",
+		return new string[] {"Chef - They cook ''food''. Their ''food'' has a variety of nasty effects",
 		    "They have a lot of health, but they need time to set up their meals. Use it wisely"};
 	}
 }

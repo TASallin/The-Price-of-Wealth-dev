@@ -64,7 +64,8 @@ public class LabRobot : Character {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Lab Robot - Performs tasks like melt and cut through metal",
+		return new string[] {"Lab Robot - Roboit being tested for the military",
+            "Preforms tasks like melting and cuting through metal",
 		    "They're also very fast and difficult to damage"};
 	}
 }

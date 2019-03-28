@@ -61,7 +61,8 @@ public class Researcher : Character {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Researcher - Expect plenty of flying chemicals and electricity",
+		return new string[] {"Researcher - Rated a lot higher than the instructors",
+            "Expect plenty of flying chemicals and electricity",
 		    "They'll also begin reading our movements as the battle goes on"};
 	}
 }

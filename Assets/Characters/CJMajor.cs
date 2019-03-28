@@ -88,7 +88,7 @@ public class CJMajor : Character {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Criminal Justice Major - Future cops and stuff. Particularly skilled at fighting",
+		return new string[] {"Criminal Justice Major - What to be like Phoenix Wright. Particularly skilled at fighting",
 		    "Depending on their level of motivation, this situation is either really good or bad for their job",
 			"They get stronger the more charge their enemies have. Be mindful of your strategy"};
 	}

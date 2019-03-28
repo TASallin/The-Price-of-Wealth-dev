@@ -151,7 +151,7 @@ public class CultLeader : PizzaCultist {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Cult Leader - The highest person in the pizza cult.",
+		return new string[] {"Cult Leader - The Grand Poobah of the pizza cult.",
 		    "Aside from all the pizza moves, he can sacrifice his minions to give himself power and healing",
 			"He can also try to sacrifice us, but if he misses he gets no stats",
      		"He'll actually run when he runs out of pizza unlike the minions"};

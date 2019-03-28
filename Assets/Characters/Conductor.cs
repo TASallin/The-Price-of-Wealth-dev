@@ -94,7 +94,8 @@ public class Conductor : Character {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Conductor - Their entire team positioning will constantly change",
+		return new string[] {"Conductor - Person in charge of a train, wait wrong country",
+            "Their entire team positioning will constantly change",
 		    "They can buff or heal their team as well. And if they end the show on their own terms, it will be ugly"};
 	}
 }

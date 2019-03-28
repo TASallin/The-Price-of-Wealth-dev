@@ -24,6 +24,7 @@ public class Dummy : Character {
 	public override string[] CSDescription () {
 		return new string[] {"Dummy - The robber placed this here",
 		    "It's completely harmless. Ignore it"};
-	}
-	
+        //substitution jutsu
+    }
+
 }

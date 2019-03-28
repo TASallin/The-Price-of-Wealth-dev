@@ -73,7 +73,8 @@ public class Slime : Character {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Slime - abominations created by science. Or bad cooking",
+		return new string[] {"Slime - It's a slime have you never played a rpg before",
+            "It was created by science or just bad cooking",
 		    "They split every time hit it if it doesn't die, and we'll get slimed on top of it",
 			"We can use its slowness to our advantage, so try to set up and kill it at once"};
 	}

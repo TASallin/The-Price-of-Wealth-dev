@@ -95,7 +95,8 @@ public class MechanicalEngineer : Character {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Mechanical Engineering Major - Relies on teamwork and oil",
+		return new string[] {"Mechanical Engineering Major - The most common engineer to be",
+            "Relies on teamwork and oil",
 		    "This makes them particularly dangerous in a group. Running can be a good decision in that case"};
 	}
 

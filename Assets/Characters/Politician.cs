@@ -155,8 +155,9 @@ public class Politician : Character {
 	}
 	
 	public override string[] CSDescription() {
-		return new string[] {"This is The Politician. They'll frequently campaign to get stronger",
-		    "They can put you to sleep, negate your stats, and if you take too long, they'll use a triple attack with their cane",
+		return new string[] {"This is The Politician. They lie for a living",
+            "They'll frequently campaign to get stronger",
+            "They can put you to sleep, negate your stats, and if you take too long, they'll use a triple attack with their cane",
 			"Apparently their weakness is in all the promises they make", 
 		"But this doesn't answer the most important question...what party are they from?"}; 
 	}

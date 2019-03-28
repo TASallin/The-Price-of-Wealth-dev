@@ -78,7 +78,8 @@ public class Janitor : Character {
     }	
 	
 	public override string[] CSDescription () {
-		return new string[] {"Janitor - Works with poisons and other debuffs",
+		return new string[] {"Janitor - Tired of cleaning up after you",
+            "Works with poisons and other debuffs",
 		    "Unlike other poisons, the janitors' stack in severity as they are used",
 		    "Since switching out inexcplicably halts the toxins, utilize that if it gets too severe"};
 	}

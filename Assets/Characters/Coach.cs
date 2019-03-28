@@ -72,7 +72,8 @@ public class Coach : Character {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Coach - Very good at buffing their team, and can switch and attack in the same turn",
+		return new string[] {"Coach - Likes to yell at others to do better",
+        "Very good at buffing their team, and can switch and attack in the same turn",
 		    "However, their buffs don't hold up well if their team members get defeated"};
 	}
 }

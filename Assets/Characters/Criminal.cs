@@ -84,7 +84,7 @@ public class Criminal : Character {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Criminal - Steals our stuff and runs away",
+		return new string[] {"Criminal - Steals your stuff and runs away like a coward",
 		    "They can't run if affected by specific statuses, or if they're at 0 hp, so go for that"};
 	}
 }

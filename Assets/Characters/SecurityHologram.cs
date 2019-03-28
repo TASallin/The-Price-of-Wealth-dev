@@ -65,7 +65,8 @@ public class SecurityHologram : Character {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Security Hologram - Tied down to the laptop its projected from",
+		return new string[] {"Security Hologram - It is like the AI from halo",
+            "Tied down to the laptop its projected from",
 		    "The firewall it creates presents a serious problem if anyone switches out",
 			"They can also attack the entire team at once"};
 	}

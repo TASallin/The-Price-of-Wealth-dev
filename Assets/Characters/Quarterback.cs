@@ -82,7 +82,7 @@ public class Quarterback : FootballPlayer {
 		return dropped;	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Quarterback - Like a regular football player but stronger and vainer", 
+		return new string[] {"Quarterback - Like a regular football player but stronger and more full of himself", 
 		"I wonder if we could figure out how to recruit this person"};
 	}
 }

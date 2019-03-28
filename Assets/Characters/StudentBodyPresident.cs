@@ -153,7 +153,7 @@ public class StudentBodyPresident : Character {
 	}
 	
 	public override string[] CSDescription() {
-		return new string[] {"Student Body President - Known for extreme cowardice",
+		return new string[] {"Student Body President - Exetremely pompous and overconfident but has extreme cowardice for phyiscal violence",
 		    "When they switch out, they'll give buffs to their new bodyguards",
 		    "They also change policies that affect all of us"};
 	}

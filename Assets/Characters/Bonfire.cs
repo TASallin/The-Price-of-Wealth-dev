@@ -41,7 +41,8 @@ public class Bonfire : Character {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Bonfire - Do you have enough evasion to jump it?"};
+		return new string[] {"Bonfire - It is a large fire",
+            "Do you have enough evasion to jump it?" };
 	}
 	
 }

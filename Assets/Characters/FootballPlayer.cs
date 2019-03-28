@@ -64,7 +64,7 @@ public class FootballPlayer : Character {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Sports Media Major - a member of the football team. Attacks, buffs, and defends", 
+		return new string[] {"Sports Media Major - also a member of the football team. Attacks, buffs, and defends", 
 		"A pretty straightforward opponent, but he will give his team temporary attack at the start of their turn, so watch out for that"};
 	}
 }

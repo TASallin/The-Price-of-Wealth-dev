@@ -117,8 +117,10 @@ public class ChemistryMajor : Character {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Chemistry Major - They throw flasks of liquid and bad things happen",
-		    "They've also gotten so used to poison that it doesn't effect them anymore",
+		return new string[] {"Chemistry Major - They want to be Walter White",
+            "They throw flasks of liquid and bad things happen",
+		    "They've also huffed too much poison so that it doesn't effect them anymore",
 			"They only have so many flasks, after which their regular attacks are weak"};
-	}
+        //They've also gotten so used to poison that it doesn't effect them anymore
+    }
 }

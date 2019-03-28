@@ -78,7 +78,8 @@ public class HistoryMajor : Character {
 	}
 	
 	public override string[] CSDescription() {
-		return new string[] {"History Major - All those medieval knight sets they've had in a glass case are finally being used"
+		return new string[] {"History Major - Buying tons of swords and shields actually became useful"
 		, "They're strong in defense, and they know some weird tactics things. Use an item if you can't beat them normally"};
-	}
+        //All those medieval knight sets they've had in a glass case are finally being used
+    }
 }

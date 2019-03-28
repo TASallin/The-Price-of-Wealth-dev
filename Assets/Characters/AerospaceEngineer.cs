@@ -86,8 +86,9 @@ public class AerospaceEngineer : Character {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Aerospace Engineering Major - Works with flying things. Like that drone hovering around",
+		return new string[] {"Aerospace Engineering Major - Make flying objects. Trying to get into SpaceX",
 		    "At the start of the fight they'll call in a powerful air-strike. Don't be around for that",
 		    "Despite all their attacks, they have a weak defense, and the air-strike will fail if they're not conscious"};
-	}
+        //Works with flying things. Like that drone hovering around
+    }
 }

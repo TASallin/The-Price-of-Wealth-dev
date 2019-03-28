@@ -89,7 +89,7 @@ public class CulinaryMajor : Character {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Culinary Major - They're good at cooking and other food-related concepts",
+		return new string[] {"Culinary Major - They're good at cooking and love eating",
 		   "Don't question how they cook without any nearby heat source, especially in the middle of combat",
 		   "Or their endless supply of food"};
 		

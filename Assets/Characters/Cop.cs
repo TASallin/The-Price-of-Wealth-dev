@@ -77,5 +77,6 @@ public class Cop : Character {
 	public override string[] CSDescription () {
 		return new string[] {"Cop - Not really serving and protecting anymore",
 		    "They can't use their gun until we deal damage to them, and their donut supply will lower their stats"};
+        //Make sure you aren't black
 	}
 }

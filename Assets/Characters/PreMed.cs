@@ -69,7 +69,8 @@ public class PreMed : Character {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Pre-Med Student - Aside from the obvious healing, their attacks ignore most defenses",
+		return new string[] {"Pre-Med Student - They are learing how to be a doctor and like cutting people a little too much",
+            "Aside from the obvious healing, their attacks ignore most defenses",
 	    	"They have ways to gain power as well, so try to beat them before they drag the fight out too long"};
 	}
 }

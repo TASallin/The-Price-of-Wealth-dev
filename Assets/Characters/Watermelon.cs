@@ -22,7 +22,7 @@ public class Watermelon : Character {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Watermelon - You were supposed to attack it",
+		return new string[] {"Watermelon - It's a watermelon why are you afraid of it attack it",
 		    "Do that next time"};
 	}
 	

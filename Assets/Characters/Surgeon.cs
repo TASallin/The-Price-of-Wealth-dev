@@ -70,7 +70,7 @@ public class Surgeon : Doctor {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Surgeon - Currently the easiest area boss by far",
-		    "Please submit ideas to make it more difficult"};
+		return new string[] {"Surgeon - Liked to cut open people way too much",
+		    "Has debuffs such as poisen and goop"};
 	}
 }

@@ -95,7 +95,7 @@ public class ShuttleDriver : Character {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Shuttle Driver - complete with the actual bus and a neverending supply of beer...",
+		return new string[] {"Shuttle Driver - Actually has a bus, but will never arrive on time and has a neverending supply of beer...",
 		    "The more they drink, the less dangerous they become, but if they complain they'll get more dangerous...not helpful",
 			"Also when they have low hp, they'll begin a process of running us over with the shuttle",
 		    "If you can't take them out in time, be sure to run as soon as they start preparing"};

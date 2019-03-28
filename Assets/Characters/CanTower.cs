@@ -22,7 +22,8 @@ public class CanTower : Character {
 	}
 	
 	public override string[] CSDescription () {
-		return new string[] {"Can Tower - You were supposed to attack it",
+		return new string[] {"Can Tower - It's a tower of cans",
+            "You were supposed to attack it",
 		    "Do that next time"};
 	}
 	
