@@ -6,7 +6,7 @@ public class Ninja : Quirk {
 	
 	public override TimedMethod[] Initialize (bool player) {
 		self.status.blindImmune = true;
-		self.SetEvasion(self.GetEvasion() + self.GetAccuracy());
-		return new TimedMethod[0];
+		self.GainEvasion(self.GetAccuracy());
+		return new TimedMethod[] {new TimedMethod(0, "CharLogSprite", new object[] {self.GetAccuracy().ToString(), self.partyIndex, "evasion", player})};
 	}
 }

@@ -12,7 +12,6 @@ public class Ill : Quirk {
 	}
 	
 	public override TimedMethod[] Initialize (bool player) {
-		self.status.Poison(1);
-		return new TimedMethod[0];
+		return self.status.Poison(1);
 	}
 }

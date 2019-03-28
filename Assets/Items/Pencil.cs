@@ -4,7 +4,7 @@ public class Pencil : Item {
 	
 	public override TimedMethod[] Use () {
 		Attacks.SetAudio("Knife", 15);
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Small Swing"}), new TimedMethod(60, "StagnantAttack", new object[] {
+		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Small Swing"}), new TimedMethod(0, "StagnantAttack", new object[] {
 			true, Party.GetPlayer().GetStrength() + 3, Party.GetPlayer().GetStrength() + 3, Party.GetPlayer().GetAccuracy(), true, true, false})};
 	}
 }

@@ -47,14 +47,15 @@ public class Administrator : Character {
 			current.SetRecruitable(false);
 			Party.AddEnemy(current);
 		}
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"AdminSummon"}),
+		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Recruit"}),
     		new TimedMethod(60, "Log", new object[] {ToString() + " called in two underlings"})};
 	}
 	
 	public TimedMethod[] Switch() {
 		if (GetGooped()) {
 			status.gooped = false;
-			return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " cleaned the goop"})};
+			return new TimedMethod[] {new TimedMethod(0, "CharLogSprite", new object[] {"Cleaned", Party.enemySlot - 1, "goop", false}),
+			    new TimedMethod(60, "Log", new object[] {ToString() + " cleaned the goop"})};
 		}
 		int former = Party.enemySlot;
 		for (int i = 0; i < 4; i++) {
@@ -68,13 +69,14 @@ public class Administrator : Character {
 	}
 	
 	public TimedMethod[] Fire () {
-		charge += 10;
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"AdminFired"}), new TimedMethod(0, "Audio", new object[] {"Fire"}),
-		    new TimedMethod(60, "Log", new object[] {ToString() + " fired the underlings in anger. Charge +10"})};
+		GainCharge(10);
+		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Fire"}),
+		    new TimedMethod(0, "CharLogSprite", new object[] {"10", Party.enemySlot - 1, "charge", false}),
+		    new TimedMethod(60, "Log", new object[] {ToString() + " fired the underlings in anger"})};
 	}
 	
 	public TimedMethod[] Attack() {
-		Attacks.SetAudio("Blunt Hit", 10);
+		Attacks.SetAudio("Blunt Hit", 6);
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " attacked"}), 
 		    new TimedMethod(0, "Audio", new object[] {"Small Swing"}),
 		    new TimedMethod(0, "StagnantAttack", new object[] {false, 3, 3, GetAccuracy(), true, true, false})};

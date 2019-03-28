@@ -1,7 +1,7 @@
 public class EnglishMajor : Character {
 	
 	public EnglishMajor() {
-		health = 15; maxHP = 15; strength = 2; power = 0; charge = 0; defense = 0; guard = 0;
+		health = 19; maxHP = 19; strength = 4; power = 0; charge = 0; defense = 0; guard = 0;
 		baseAccuracy = 14; accuracy = 14; dexterity = 4; evasion = 0; type = "English Major"; passive = new Reading(this);
 		quirk = Quirk.GetQuirk(this); special = new Quote(); special2 = new Read(); 
 		player = false; champion = false; recruitable = true; CreateDrops(); attackEffect = "switch out";
@@ -21,8 +21,9 @@ public class EnglishMajor : Character {
 	
 	public override TimedMethod[] BasicAttack() {
 		TimedMethod[] attackPart;
+		Attacks.SetAudio("Blunt Hit", 15);
 		if (Party.BagContains(new Metronome())) {
-			attackPart = Attacks.Attack(this, Party.GetEnemy(), strength + 2, strength + 2, GetAccuracy(), true, true, false);
+			attackPart = Attacks.Attack(this, Party.GetEnemy(), strength + 3, strength + 3, GetAccuracy(), true, true, false);
 		} else {
 		    attackPart = Attacks.Attack(this, Party.GetEnemy());
 		}
@@ -39,19 +40,17 @@ public class EnglishMajor : Character {
 		    	}
     		}
      	}
-		Attacks.SetAudio("Blunt Hit", 20);
-		TimedMethod[] moves = new TimedMethod[attackPart.Length + 3];
-		moves[0] = new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 1, 2});
-		moves[1] = new TimedMethod(0, "AudioAfter", new object[] {"Big Swing", 10});
-		attackPart.CopyTo(moves, 2);
+		TimedMethod[] moves = new TimedMethod[attackPart.Length + 2];
+		moves[0] = new TimedMethod(0, "AudioAfter", new object[] {"Big Swing", 10});
+		attackPart.CopyTo(moves, 1);
 		moves[moves.Length - 1] = switchPart;
 		return moves;
 	}
 	
 	public TimedMethod[] Attack () {
-		Attacks.SetAudio("Blunt Hit", 20);
+		Attacks.SetAudio("Blunt Hit", 15);
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " swung a dictionary"}),
-		new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 1, 2}), new TimedMethod(0, "AudioAfter", new object[] {"Big Swing", 10}),
+		new TimedMethod(0, "AudioAfter", new object[] {"Big Swing", 10}),
 		new TimedMethod(0, "Attack", new object[] {false})};
 	}
 	
@@ -59,19 +58,24 @@ public class EnglishMajor : Character {
 		if (Attacks.EvasionCycle(this, Party.GetPlayer())) {
 	    	Party.GetPlayer().GainCharge(3);
 		    Party.GetPlayer().GainDefense(-2);
-			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"EnglishTaunt"}), 
+			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Fire"}), 
 			    new TimedMethod(60, "Log", new object[] {ToString() + " insulted in old English. Defense down and charge up"}),
-				new TimedMethod(0, "Audio", new object[] {"Nullify"})};
+				new TimedMethod(0, "Audio", new object[] {"Nullify"}),
+				new TimedMethod(0, "CharLogSprite", new object[] {"3", Party.playerSlot - 1, "charge", true}),
+				new TimedMethod(0, "CharLogSprite", new object[] {"-2", Party.playerSlot - 1, "defense", true})};
 		} else {
-			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"EnglishTaunt"}), 
+			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Fire"}), 
 			    new TimedMethod(60, "Log", new object[] {ToString() + " insulted in old English. It went over your head"})};
 		}
 	}
 	
 	public TimedMethod[] Argument() {
 		power = System.Math.Max(power, 0); charge = System.Math.Min(charge + 5, 5);
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Blah"}), new TimedMethod(0, "AudioAfter", new object[] {"Clean", 20}),
-		    new TimedMethod(60, "Log", new object[] {ToString() + " constructed an argument. Attack debuffs removed and charge up"})};
+		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {
+			ToString() + " constructed an argument. Attack debuffs removed and charge up"}),
+			new TimedMethod(0, "Audio", new object[] {"Clean"}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"Atk Reset", Party.enemySlot - 1, "nullAttack", false}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"5", Party.enemySlot - 1, "charge", false})};
 	}
 	
 	public override void CreateDrops() {

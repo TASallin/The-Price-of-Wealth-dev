@@ -9,9 +9,9 @@ public class Temperamental : Quirk {
 	public override TimedMethod[] CheckLead (bool player) {
 		if (!used && self.GetMaxHP() - self.GetHealth() > self.GetHealth()) {
 		    used = true;
-			self.SetCharge(self.GetCharge() + 5);
-			return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {
-			self.ToString() + " is filled with rage"})};
+			self.GainCharge(5);
+			return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {self.ToString() + " is filled with rage"}),
+	    	new TimedMethod(0, "CharLogSprite", new object[] {"5", self.partyIndex, "charge", player})};
 		}
 		return new TimedMethod[0];
 	}

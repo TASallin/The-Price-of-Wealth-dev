@@ -6,7 +6,8 @@ public class Calculator : Item {
 		Party.GetPlayer().GainAccuracy(5);
 		Party.AddItem(this);
 		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Wikipedia"}),
-		    new TimedMethod(60, "Log", new object[] {"Accuracy was increased"})};
+		    new TimedMethod(60, "Log", new object[] {"Accuracy was increased"}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"5", Party.playerSlot - 1, "accuracy", true})};
 	}
 
 }

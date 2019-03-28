@@ -13,7 +13,7 @@ public class Outgun : Passive {
 	    }
 		if (self.GetCharge() < enemy.GetCharge()) {
 			self.SetCharge(self.GetCharge() + 2);
-            return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {self.ToString() + " sized up their enemy"})};			
+            return new TimedMethod[] {new TimedMethod(0, "CharLogSprite", new object[] {"2", self.partyIndex, "charge", player})};			
 		} else {
 			return new TimedMethod[0];
 		}

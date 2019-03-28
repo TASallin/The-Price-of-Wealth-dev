@@ -12,7 +12,7 @@ public class Armored : Passive {
 		if (self.GetHealth() >= formerHP) {
 			self.SetGuard(self.GetGuard() + 1);
 			formerHP = self.GetHealth();
-			return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {self.ToString() + "'s guard increased"})};
+			return new TimedMethod[] {new TimedMethod(0, "CharLogSprite", new object[] {"1", self.partyIndex, "guard", self.GetPlayer()})};
 		}
 		formerHP = self.GetHealth();
 		return new TimedMethod[0];
@@ -21,7 +21,7 @@ public class Armored : Passive {
 	public override TimedMethod[] Initialize (bool player) {
 		formerHP = System.Int32.MaxValue;
 		self.GainDefense(1);
-		return new TimedMethod[0];
+		return new TimedMethod[] {new TimedMethod(0, "CharLogSprite", new object[] {"1", self.partyIndex, "defense", self.GetPlayer()})};
 	}
 	
 }

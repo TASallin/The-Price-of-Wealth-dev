@@ -1,10 +1,10 @@
 public class ForceField : Passive {
 	
-	public ForceField(Character c) {self = c; name = "Force field"; description = "Gain 3 block every turn";}
+	public ForceField(Character c) {self = c; name = "Force field"; description = "Gain 2 block every turn";}
 	
 	public override TimedMethod[] CheckLead(bool player) {
-		self.SetGuard(self.GetGuard() + 3);
-		return new TimedMethod[0];
+		self.GainGuard(2);
+		return new TimedMethod[] {new TimedMethod(0, "CharLogSprite", new object[] {"2", self.partyIndex, "guard", player})};
 	}
 	
 	public override TimedMethod[] Initialize(bool player) {

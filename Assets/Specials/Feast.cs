@@ -9,7 +9,12 @@ public class Feast : Special {
 			}
 		}
 	    return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Eat"}), new TimedMethod(0, "Audio", new object[] {"Heal"}),
-		    new TimedMethod(0, "Audio", new object[] {"Skill2"}), new TimedMethod(60, "Log", new object[] {"Party health +5"})};
+		    new TimedMethod(0, "Audio", new object[] {"Skill2"}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"5", 0, "healing", true}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"5", 1, "healing", true}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"5", 2, "healing", true}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"5", 3, "healing", true}),
+			new TimedMethod(30, "Log", new object[] {"Party was healed"})};
 	}
 	
 	public override void UseOutOfCombat () {

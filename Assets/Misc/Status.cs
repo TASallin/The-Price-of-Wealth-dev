@@ -19,6 +19,7 @@ public class Status {
 	public bool waking;
 	public static int catalyst;
 	public static bool firewall;
+	public static System.Random rng = new System.Random();
 	
 	public Status (Character c) {
 		self = c; asleep = 0; poisoned = 0; stunned = 0; gooped = false; blinded = 0; caffeine = 0; waking = false; regeneration = 0; passing = false;
@@ -33,7 +34,8 @@ public class Status {
 			    temp = new TimedMethod[messages.Length + 2];
 				messages.CopyTo(temp, 0);
 				temp[messages.Length] = new TimedMethod(0, "Audio", new object[] {"Poison Damage"});
-				temp[messages.Length + 1] = new TimedMethod(0, "CharLog", new object[] {poisoned.ToString() + " poison", self.partyIndex});
+				temp[messages.Length + 1] = new TimedMethod(
+				    0, "CharLogSprite", new object[] {poisoned.ToString() + " poison", self.partyIndex, "poison", self.GetPlayer()});
 				messages = temp;
 			if (self.GetHealth() == 0) {
 			    TimedMethod[] dead = Party.CheckDeath();
@@ -45,7 +47,6 @@ public class Status {
 			}
 		}
 		if (apathetic > 0) {
-			System.Random rng = new System.Random();
 			if (rng.Next(10) < 3) {
 				passing = true;
 				apathetic--;
@@ -95,12 +96,17 @@ public class Status {
 		}
 		if (regeneration > 0) {
 			self.Heal(regeneration);
+			temp = new TimedMethod[messages.Length + 1];
+			messages.CopyTo(temp, 0);
+			temp[messages.Length] = new TimedMethod(
+			   0, "CharaLogSprite", new object[] {regeneration.ToString(), self.partyIndex, "regeneration", self.GetPlayer()});
+			messages = temp;
 		}
 		if (blinded > 0) {
 			blinded--;
 		}
 		if (asleep > 0) {
-	        int threshold = new System.Random().Next(6) + 1;
+	        int threshold = rng.Next(6) + 1;
 			if (waking || threshold <= asleep) {
 				asleep = 0; waking = false;
 				temp = new TimedMethod[messages.Length + 1];
@@ -167,34 +173,38 @@ public class Status {
 			} else {
 			    poisoned = amount + catalyst;
 			    return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Poison"}),
-				    new TimedMethod(0, "CharLog", new object[] {"Poison", self.partyIndex})};
+				    new TimedMethod(0, "CharLogDelay", new object[] {"Poison", self.partyIndex, "poison", self.GetPlayer()})};
 			}
 		}
-		return new TimedMethod[] {new TimedMethod(0, "CharLog", new object[] {"Immune", self.partyIndex}), new TimedMethod("Null")};
+		return new TimedMethod[] {new TimedMethod(0, "CharLogDelay", new object[] {"IMMUNE", self.partyIndex, "poison", self.GetPlayer()}),
+    		new TimedMethod("Null")};
 	}
 	
 	public TimedMethod[] Regenerate (int amount) {
 		regeneration = System.Math.Max(amount, regeneration);
-		return new TimedMethod[] {new TimedMethod(0, "CharLog", new object[] {"Regeneration", self.partyIndex}), new TimedMethod("Null")};
+		return new TimedMethod[] {new TimedMethod(0, "CharLogDelay", new object[] {
+			"Regeneration", self.partyIndex, "regeneration", self.GetPlayer()}), new TimedMethod("Null")};
 	}
 	
 	public TimedMethod[] StackPoison (int amount) {
 	    if (!poisonImmune) {
 			poisoned = poisoned + amount + catalyst;
-			return new TimedMethod[] {new TimedMethod(0, "CharLog", new object[] {"Poison", self.partyIndex}),
+			return new TimedMethod[] {new TimedMethod(0, "CharLogDelay", new object[] {"Poison", self.partyIndex, "poison", self.GetPlayer()}),
 			    new TimedMethod(0, "Audio", new object[] {"Poison"})};
 		}
-		return new TimedMethod[] {new TimedMethod(0, "CharLog", new object[] {"Immune", self.partyIndex}), new TimedMethod("Null")};
+		return new TimedMethod[] {new TimedMethod(0, "CharLogDelay", new object[] {"IMMUNE", self.partyIndex, "poion", self.GetPlayer()}),
+		    new TimedMethod("Null")};
 	}
 	
 	public TimedMethod[] Sleep () {
 		if (!sleepImmune && asleep == 0 && caffeine <= 0) {
 			asleep = 1;
 			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skip Turn"}),
-			    new TimedMethod(0, "CharLog", new object[] {"Asleep", self.partyIndex})};
+			    new TimedMethod(0, "CharLogDelay", new object[] {"Asleep", self.partyIndex, "sleep", self.GetPlayer()})};
 		}
 		if (asleep == 0) {
-		    return new TimedMethod[] {new TimedMethod(0, "CharLog", new object[] {"Immune", self.partyIndex}), new TimedMethod("Null")};
+		    return new TimedMethod[] {new TimedMethod(0, "CharLogDelay", new object[] {"IMMUNE", self.partyIndex, "sleep", self.GetPlayer()}),
+    			new TimedMethod("Null")};
 		}
 		return new TimedMethod[] {new TimedMethod("Null"), new TimedMethod("Null")};
 	}
@@ -204,14 +214,14 @@ public class Status {
 	}
 	
 	public TimedMethod[] Stun (int amount) {
-		System.Random rng = new System.Random();
 		if (!stunImmune && stunned == 0 && rng.Next(2) == 0) {
 			stunned = amount;
 			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"S Explosion"}),
-    			new TimedMethod(0, "CharLog", new object[] {"Stun", self.partyIndex})};
+    			new TimedMethod(0, "CharLogDelay", new object[] {"Stun", self.partyIndex, "stun", self.GetPlayer()})};
 		}
 		if (stunned == 0) {
-		    return new TimedMethod[] {new TimedMethod(0, "CharLog", new object[] {"Resist", self.partyIndex}), new TimedMethod("Null")};
+		    return new TimedMethod[] {new TimedMethod(0, "CharLogDelay", new object[] {"RESIST", self.partyIndex, "stun", self.GetPlayer()}),
+    			new TimedMethod("Null")};
 		}
 		return new TimedMethod[] {new TimedMethod("Null"), new TimedMethod("Null")};
 	}
@@ -220,24 +230,26 @@ public class Status {
 		if (!goopImmune) {
 			gooped = true;
 			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Goop"}),
-			    new TimedMethod(0, "CharLog", new object[] {"Goop", self.partyIndex})};
+			    new TimedMethod(0, "CharLogDelay", new object[] {"Goop", self.partyIndex, "goop", self.GetPlayer()})};
 		}
-		return new TimedMethod[] {new TimedMethod(0, "CharLog", new object[] {"Immune", self.partyIndex}), new TimedMethod("Null")};
+		return new TimedMethod[] {new TimedMethod(0, "CharLogDelay", new object[] {"IMMUNE", self.partyIndex, "goop", self.GetPlayer()}),
+    		new TimedMethod("Null")};
 	}
 	
 	public TimedMethod[] Blind (int amount) {
 		if (!blindImmune) {
 			blinded += amount;
 			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Blind"}),
-			    new TimedMethod(0, "CharLog", new object[] {"Blinded", self.partyIndex})};
+			    new TimedMethod(0, "CharLogDelay", new object[] {"Blind", self.partyIndex, "blind", self.GetPlayer()})};
 		}
-		return new TimedMethod[] {new TimedMethod(0, "CharLog", new object[] {"Immune", self.partyIndex}), new TimedMethod("Null")};
+		return new TimedMethod[] {new TimedMethod(0, "CharLogDelay", new object[] {"IMMUNE", self.partyIndex,  "blid", self.GetPlayer()}),
+    		new TimedMethod("Null")};
 	}
 	
 	public TimedMethod[] Pass () {
 		passing = true;
 		//return new TimedMethod[0];
-		return new TimedMethod[] {new TimedMethod(0, "CharLog", new object[] {"Skip", self.partyIndex})}; 
+		return new TimedMethod[] {new TimedMethod(0, "CharLogDelay", new object[] {"SKIP", self.partyIndex, "skip", self.GetPlayer()})}; 
 	}
 	
 	public TimedMethod[] CauseApathy (int amount) {
@@ -246,24 +258,24 @@ public class Status {
 		}
 		apathetic = amount;
 		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skip Turn"}), 
-		    new TimedMethod(0, "CharLog", new object[] {"Apathy", self.partyIndex})};
+		    new TimedMethod(0, "CharLogDelay", new object[] {"Apathy", self.partyIndex, "apathy", self.GetPlayer()})};
 	}
 	
 	public TimedMethod[] Possess () {
 		if (!self.GetChampion() && possessed == 0) {
 			possessed = 5;
 			return new TimedMethod[] { new TimedMethod(0, "Audio", new object[] {"Poison"}),
-			    new TimedMethod(0, "CharLog", new object[] {"Possession", self.partyIndex})};
+			    new TimedMethod(0, "CharLogDelay", new object[] {"WEALTHY", self.partyIndex, "stun", self.GetPlayer()})};
 		}
 		if (self.GetChampion()) {
-		    return new TimedMethod[] {new TimedMethod(0, "CharLog", new object[] {"Strong Will", self.partyIndex}),
+		    return new TimedMethod[] {new TimedMethod(0, "CharLogDelay", new object[] {"Strong Will", self.partyIndex, "stun", self.GetPlayer()}),
 			    new TimedMethod("Null")};
 		}
 		return new TimedMethod[] {new TimedMethod("Null"), new TimedMethod("Null")};
 	}
 	
 	public void Coffee () {
-		caffeine = 5; //self.SetPower(self.GetPower() + 5); self.GainAccuracy(5);
+		caffeine = 6; //self.SetPower(self.GetPower() + 5); self.GainAccuracy(5);
 		//return new TimedMethod[] { new TimedMethod(0, "Audio", new object[] {"Tazer"}),
 		//	new TimedMethod(0, "CharLog", new object[] {"Caffeine", self.partyIndex})};
 	}

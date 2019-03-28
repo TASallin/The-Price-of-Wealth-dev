@@ -1,6 +1,6 @@
 public class ExplosiveBrew : Item {
 	
-	public ExplosiveBrew () {name = "Explosive Brew"; description = "attack the enemy party. If their lead dodges, their whole team will"; price = 2;}
+	public ExplosiveBrew () {name = "Explosive Brew"; description = "Attack the enemy party. Destroys the flask it's in."; price = 2;}
 	
 	public override TimedMethod[] Use () {
 		//Party.AddItem(new Flask());

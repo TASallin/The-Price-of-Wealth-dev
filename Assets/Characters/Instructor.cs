@@ -16,15 +16,21 @@ public class Instructor : Character {
 		    return Lecture();
 		} else if (cycle) {
 		    if (Party.GetPlayer().GetAsleep()) {
-				charge = charge + 2;
+				int amount = 0;
+				foreach (Character c in Party.members) {
+					if (c != null && c.GetAlive() && c.GetAsleep()) {
+						amount += 2;
+					}
+				}
+				GainCharge(amount);
 				return new TimedMethod[] { new TimedMethod(0, "Audio", new object[] {"Fire"}),
-    				new TimedMethod(60, "Log", new object[] {ToString() + " is seething. Charge+2"}),
-				    new TimedMethod("GetEnemy")};
+    				new TimedMethod(60, "Log", new object[] {ToString() + " is seething"}),
+				    new TimedMethod(0, "CharLogSprite", new object[] {amount.ToString(), Party.enemySlot, "charge", false})};
 			} else {
 				cycle = false;
 				Attacks.SetAudio("Slap", 10);
 				return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " unleashed her wrath"}),
-				    new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 1, 2}), new TimedMethod(0, "Audio", new object[] {"Small Swing"}),
+				    new TimedMethod(0, "Audio", new object[] {"Small Swing"}),
 				    new TimedMethod(0, "StagnantAttack", new object[] {false, 1, 1, GetAccuracy(), true, true, false})};
 			}
 		} else {
@@ -32,7 +38,7 @@ public class Instructor : Character {
 			if (rnd.Next(3) != 0) {
 				Attacks.SetAudio("Slap", 10);
 				return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " attacked"}),
-				    new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 1, 2}), new TimedMethod(0, "Audio", new object[] {"Small Swing"}),
+				    new TimedMethod(0, "Audio", new object[] {"Small Swing"}),
    				    new TimedMethod(0, "StagnantAttack", new object[] {false, 1, 1, GetAccuracy(), true, true, false})};
 			} else {
 				cycle = true;
@@ -42,14 +48,23 @@ public class Instructor : Character {
 	}
 	
 	public virtual TimedMethod[] Lecture () {
+		TimedMethod[] totalSleep = new TimedMethod[] {new TimedMethod("Null"), new TimedMethod("Null"), new TimedMethod("Null"),
+	    	new TimedMethod("Null"), new TimedMethod("Null"), new TimedMethod("Null"), new TimedMethod("Null"), new TimedMethod("Null")};
+		int index = 0;
 		TimedMethod[] sleepPart;
-		if (Attacks.EvasionCycle(this, Party.GetPlayer())) {
-		    sleepPart = Party.GetPlayer().status.Sleep();
-		} else {
-			sleepPart = new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"It went over your head"}), new TimedMethod("Null")};
+		foreach (Character c in Party.members) {
+			if (c != null && c.GetAlive() && Attacks.EvasionCycle(this, c)) {
+		        sleepPart = c.status.Sleep();
+	    	} else {
+    			sleepPart = new TimedMethod[] {new TimedMethod("Null"), new TimedMethod("Null")};
+		    }
+			totalSleep[index] = sleepPart[0];
+			totalSleep[index + 1] = sleepPart[1];
+			index += 2;
 		}
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Blah"}), new TimedMethod(0, "Audio", new object[] {"Filibuster"}),
-		    new TimedMethod(60, "Log", new object[] {ToString() + " lectured"}), sleepPart[0], sleepPart[1]};
+		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Filibuster"}),
+		    new TimedMethod(60, "Log", new object[] {ToString() + " lectured"}), totalSleep[0], totalSleep[1], totalSleep[2], totalSleep[3],
+			totalSleep[4], totalSleep[5], totalSleep[6], totalSleep[7]};
 	}
 	
 	public override void CreateDrops() {
@@ -59,7 +74,7 @@ public class Instructor : Character {
 	
 	public override Item[] Loot () {
 		System.Random rnd = new System.Random();
-		int sp = 3 + rnd.Next(4);
+		int sp = 2 + rnd.Next(2);
 		Party.UseSP(sp * -1);
 		Item[] dropped = drops;
 		drops = new Item[0];

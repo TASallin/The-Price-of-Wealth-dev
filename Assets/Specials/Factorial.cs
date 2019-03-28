@@ -20,9 +20,9 @@ public class Factorial : Special {
 		if (!Attacks.EvasionCheck(Party.GetEnemy(), Party.GetPlayer().GetAccuracy())) {
 			answer = 1; factorial = 1;
 		}
-		Attacks.SetAudio("Fire Hit", 10);
-		return new TimedMethod[] {new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 5, 6}),
-    		new TimedMethod(0, "AudioAfter", new object[] {"Laser Shot", 15}),
+		Attacks.SetAudio("Fire Hit", 6);
+		return new TimedMethod[] {
+    		new TimedMethod(0, "Audio", new object[] {"Laser Shot"}),
 		    new TimedMethod(0, "StagnantAttack", new object[] {true, answer, answer, Party.GetPlayer().GetAccuracy(), true, true, false})};
 	}
 	

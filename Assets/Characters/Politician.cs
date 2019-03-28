@@ -56,59 +56,77 @@ public class Politician : Character {
 			status.passing = false;
 			if (!broken && (cycle == 1 || cycle == 3 || cycle == 5)) {
 				broken = true; cycle = 0; defense = System.Math.Min(-1, defense - 2); power = System.Math.Min(-1, power - 2); evasion = 0;
-				return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"The promise has been broken! Voter support is 0!"})};
+				return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"The promise has been broken! Voter support is 0!"}),
+				    new TimedMethod(0, "CharLogSprite", new object[] {"SKIP", Party.enemySlot - 1, "skip", false})};
 			}
-			return new TimedMethod[0];
+			return new TimedMethod[] {new TimedMethod(0, "CharLogSprite", new object[] {"SKIP", Party.enemySlot - 1, "skip", false}),
+			    new TimedMethod(0, "Audio", new object[] {"Skip Turn"})};
 		} else { 
 		    return AI();
 		}
 	}
 	
 	public TimedMethod[] CampaignDefense() {
-		guard += 10; evasion += 10;
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Blah"}), new TimedMethod(60, "Log", new object[] {
+		TimedMethod statPart = new TimedMethod("Null");
+		if (!GetGooped()) {
+			statPart = new TimedMethod(0, "CharLogSprite", new object[] {"10", Party.enemySlot - 1, "evasion", false});
+		}
+		GainGuard(10); GainEvasion(10);
+		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {
 			"The Politician campaigned with the promise of stalling votes"}), new TimedMethod(60, "Log", new object[] {
-		    "It yielded defensive results"}), new TimedMethod("GetEnemy")};
+		    "It yielded defensive results"}),  new TimedMethod(0, "CharLogSprite", new object[] {"10", Party.enemySlot - 1, "guard", false}), statPart};
 	}
 	
 	public TimedMethod[] CampaignBalance() {
-	    power += 1; defense += 1;
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Blah"}), new TimedMethod(60, "Log", new object[] {
+	    GainPower(1); GainDefense(1);
+		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {
 			"The Politician campaigned with the promise of denying opposition"}), new TimedMethod(60, "Log", new object[] {
-		    "It yielded balanced results"}), new TimedMethod("GetEnemy")};
+		    "It yielded balanced results"}), new TimedMethod(0, "CharLogSprite", new object[] {"1", Party.enemySlot - 1, "power", false}),
+		    new TimedMethod(0, "CharLogSprite", new object[] {"1", Party.enemySlot - 1, "defense", false})};
 	}
 	
 	public TimedMethod[] CampaignOffense() {
-	    charge += 9; accuracy += 2;
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Blah"}), new TimedMethod(60, "Log", new object[] {
+	    GainCharge(9); GainAccuracy(2);
+		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {
 			"The Politician campaigned with the promise of destruction"}), new TimedMethod(60, "Log", new object[] {
-		    "It yielded offensive results"}), new TimedMethod("GetEnemy")};
+		    "It yielded offensive results"}), new TimedMethod(0, "CharLogSprite", new object[] {"9", Party.enemySlot - 1, "charge", false}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"2", Party.enemySlot - 1, "accuracy", false})};
 	}
 	
 	public TimedMethod[] Filibuster() {
+		TimedMethod[] totalSleep = new TimedMethod[] {new TimedMethod("Null"), new TimedMethod("Null"), new TimedMethod("Null"),
+	    	new TimedMethod("Null"), new TimedMethod("Null"), new TimedMethod("Null"), new TimedMethod("Null"), new TimedMethod("Null")};
+		int index = 0;
 		TimedMethod[] sleepPart;
-		if (Attacks.EvasionCycle(this, Party.GetPlayer())) {
-	        sleepPart = Party.GetPlayer().status.Sleep();
-		} else {
-			sleepPart = new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"Ineffective"}), new TimedMethod("Null")};
+		foreach (Character c in Party.members) {
+			if (c != null && c.GetAlive() && Attacks.EvasionCycle(this, c)) {
+		        sleepPart = c.status.Sleep();
+	    	} else {
+    			sleepPart = new TimedMethod[] {new TimedMethod(0, "CharLog", new object[] {"miss", c.partyIndex, true}), new TimedMethod("Null")};
+		    }
+			totalSleep[index] = sleepPart[0];
+			totalSleep[index + 1] = sleepPart[1];
+			index += 2;
 		}
 		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Filibuster"}),
-		    new TimedMethod(60, "Log", new object[] {"The Politician filibustered"}), sleepPart[0], sleepPart[1]};
+		    new TimedMethod(60, "Log", new object[] {"The Politician filibustered"}), totalSleep[0], totalSleep[1], totalSleep[2], totalSleep[3],
+			totalSleep[4], totalSleep[5], totalSleep[6], totalSleep[7]};
 	}
 	
 	public TimedMethod[] Veto() {
 		if (Attacks.EvasionCycle(this, Party.GetPlayer())) {
 		    Status.NullifyAttack(Party.GetPlayer()); Status.NullifyDefense(Party.GetPlayer());
 			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Nullify"}),
-		        new TimedMethod(60, "Log", new object[] {"The Politician used the veto. Stats were countered"}), new TimedMethod("GetPlayer")};
+		        new TimedMethod(60, "Log", new object[] {"The Politician used the veto. Stats were countered"}),
+				new TimedMethod(0, "CharLogSprite", new object[] {"atk reset", Party.playerSlot - 1, "nullAttack", false}),
+				new TimedMethod(0, "CharLogSprite", new object[] {"def reset", Party.playerSlot - 1, "nullDefense", false})};
 		}
-		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"The Politician used the veto. It failed"}), new TimedMethod("GetPlayer")};
+		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"The Politician used the veto. It failed"})};
     }
 	
 	public TimedMethod[] Attack() {
 		Attacks.SetAudio("Gunfire", 30);
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"PoliticianAttack"}), 
-		    new TimedMethod(60, "Log", new object[] {"The Politician delivered the promised destruction"}),
+		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"The Politician delivered the promised destruction"}),
 		    new TimedMethod(0, "StagnantAttack", new object[] {false, 3, 3, GetAccuracy(), true, false, false}),
 			new TimedMethod(0, "StagnantAttack", new object[] {false, 5, 5, GetAccuracy(), true, false, false}),
 		    new TimedMethod(0, "StagnantAttack", new object[] {false, 7, 7, GetAccuracy(), true, true, false})};
@@ -122,12 +140,22 @@ public class Politician : Character {
 	}
 	
 	public TimedMethod[] SaveFace() {
-		evasion += 4;
+		GainEvasion(4);
+		TimedMethod statPart = new TimedMethod("Null");
+		if (!GetGooped()) {
+			statPart = new TimedMethod(0, "CharLogSprite", new object[] {"4", Party.enemySlot - 1, "evasion", false});
+		}
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"The Politician tried to save face. Evasion up"}),
-		    new TimedMethod(0, "Audio", new object[] {"Skip Turn"})};
+		    new TimedMethod(0, "Audio", new object[] {"Skip Turn"}), statPart};
 	}
 	
 	public TimedMethod[] Manager() {
+		if (GetGooped()) {
+			status.gooped = false;
+			return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " escaped the goop"}),
+			    new TimedMethod(0, "CharLogSprite", new object[] {"Cleaned", Party.enemySlot - 1,  "goop", false}),
+			    new TimedMethod(0, "Audio", new object[] {"Clean"})};
+		}
 		Party.AddEnemy(new CampaignManager());
 		Switch();
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"The Politician called upon the campaign manager"}),
@@ -135,6 +163,12 @@ public class Politician : Character {
 	}
 	
 	public TimedMethod[] Switch() {
+		if (GetGooped()) {
+			status.gooped = false;
+			return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " escaped the goop"}),
+			    new TimedMethod(0, "CharLogSprite", new object[] {"Cleaned", Party.enemySlot - 1,  "goop", false}),
+			    new TimedMethod(0, "Audio", new object[] {"Clean"})};
+		}
 		Party.enemySlot = 2;
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"The Politician is waiting for the campaign manager"}),
 		    new TimedMethod(0, "EnemySwitch", new object[] {1, 2})};

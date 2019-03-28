@@ -7,8 +7,12 @@ public class FootballPlayerQ : FootballPlayer {
 		if (health < maxHP / 2) {
 			return Switch();
 		} else {
-			moves = new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skill2"}),
-			    new TimedMethod(60, "Log", new object[] {"The " + ToString() + " is rallying. Team power has increased"})};
+			moves = new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"The " + ToString() + " is rallying. Team power has increased"}),
+			    new TimedMethod(0, "Audio", new object[] {"Whistle"}),
+				new TimedMethod(6, "CharLogSprite", new object[] {"1", 0, "power", false}),
+				new TimedMethod(6, "CharLogSprite", new object[] {"1", 1, "power", false}),
+				new TimedMethod(6, "CharLogSprite", new object[] {"1", 2, "power", false}),
+				new TimedMethod(6, "CharLogSprite", new object[] {"1", 3, "power", false})};
 			foreach (Character current in Party.enemies) {
 				if (current != null && current.GetAlive()) {
 					current.GainPower(1);
@@ -20,6 +24,12 @@ public class FootballPlayerQ : FootballPlayer {
 	
 	
 	public TimedMethod[] Switch () {
+		if (GetGooped()) {
+			status.gooped = false;
+			return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " escaped the goop"}),
+			    new TimedMethod(0, "Audio", new object[] {"Clean"}),
+				new TimedMethod(0, "CharLogSprite", new object[] {"Cleaned", Party.enemySlot - 1, "goop", false})};
+		}
 		int former = Party.enemySlot;
 		for (int i = 0; i < 4; i++) {
 			if (Party.enemies[Party.enemySlot + i % 4] != null && Party.enemies[Party.enemySlot + i % 4].GetAlive()) {

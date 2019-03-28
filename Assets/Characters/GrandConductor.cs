@@ -1,7 +1,7 @@
 public class GrandConductor : Conductor {
 	
 	public GrandConductor() {
-		health = 30; maxHP = 30; dexterity = 5; type = "Grand Conductor"; passive = new Directive(this);
+		health = 25; maxHP = 25; dexterity = 1; type = "Grand Conductor"; passive = new Directive(this);
 		champion = true; cycle = 0; CreateDrops();
 	}
 	
@@ -34,7 +34,11 @@ public class GrandConductor : Conductor {
 		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"ConductorCount"}),  new TimedMethod(0, "Audio", new object[] {"Button"}),
 		    new TimedMethod(0, "AudioAfter", new object[] {"Button", 15}),  new TimedMethod(0, "AudioAfter", new object[] {"Button", 15}),
 			new TimedMethod(0, "AudioAfter", new object[] {"Button", 15}),
-		    new TimedMethod(60, "Log", new object[] {ToString() + " initiated the performance. All charge up"})};
+		    new TimedMethod(60, "Log", new object[] {ToString() + " initiated the performance. All charge up"}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"10", 0, "charge", false}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"10", 1, "charge", false}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"10", 2, "charge", false}),
+	        new TimedMethod(15, "CharLogSprite", new object[] {"10", 3, "charge", false})};
 	}
 	
 	public TimedMethod[] Forte() {
@@ -44,7 +48,11 @@ public class GrandConductor : Conductor {
 			}
 		}
 		return new TimedMethod[] { new TimedMethod(0, "Audio", new object[] {"Trumpet"}),
-		    new TimedMethod(60, "Log", new object[] {ToString() + " called upon a forte. All power up"})};
+		    new TimedMethod(60, "Log", new object[] {ToString() + " called upon a forte. All power up"}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"3", 0, "power", false}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"3", 1, "power", false}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"3", 2, "power", false}),
+	        new TimedMethod(15, "CharLogSprite", new object[] {"3", 3, "power", false})};
 	}
 	
 	public TimedMethod[] Piano() {
@@ -54,7 +62,11 @@ public class GrandConductor : Conductor {
 			}
 		}
 		return new TimedMethod[] { new TimedMethod(0, "Audio", new object[] {"Piano"}),
-		    new TimedMethod(60, "Log", new object[] {ToString() + " called upon a piano. Team was healed"})};
+		    new TimedMethod(60, "Log", new object[] {ToString() + " called upon a piano. Team was healed"}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"3", 0, "healing", false}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"3", 1, "healing", false}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"3", 2, "healing", false}),
+	        new TimedMethod(15, "CharLogSprite", new object[] {"3", 3, "healing", false})};
 	}
 	
 	public TimedMethod[] Allegro() {
@@ -63,8 +75,16 @@ public class GrandConductor : Conductor {
 				c.GainEvasion(5); c.GainAccuracy(1);
 			}
 		}
-		return new TimedMethod[] { new TimedMethod(0, "Audio", new object[] {"Allegro"}),
-		    new TimedMethod(60, "Log", new object[] {ToString() + " called upon an allegro. All speed up"})};
+		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Allegro"}),
+		    new TimedMethod(60, "Log", new object[] {ToString() + " called upon an allegro. All speed up"}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"5", 0, "evasion", false}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"5", 1, "evasion", false}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"5", 2, "evasion", false}),
+	        new TimedMethod(15, "CharLogSprite", new object[] {"5", 3, "evasion", false}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"1", 0, "accuracy", false}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"1", 1, "accuracy", false}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"1", 2, "accuracy", false}),
+	        new TimedMethod(15, "CharLogSprite", new object[] {"1", 3, "accuracy", false})};
 	}
 	
 	public TimedMethod[] Largo() {
@@ -74,14 +94,22 @@ public class GrandConductor : Conductor {
 			}
 		}
 		return new TimedMethod[] { new TimedMethod(0, "Audio", new object[] {"Violin"}),
-		    new TimedMethod(60, "Log", new object[] {ToString() + " called upon a largo. All defense up"})};
+		    new TimedMethod(60, "Log", new object[] {ToString() + " called upon a largo. All defense up"}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"3", 0, "guard", false}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"3", 1, "guard", false}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"3", 2, "guard", false}),
+	        new TimedMethod(15, "CharLogSprite", new object[] {"3", 3, "guard", false}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"1", 0, "defense", false}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"1", 1, "defense", false}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"1", 2, "defense", false}),
+	        new TimedMethod(15, "CharLogSprite", new object[] {"1", 3, "defense", false})};
 	}
 	
 	public TimedMethod[] Summon() {
 	System.Random rng = new System.Random();
 		int seed;
 		Character current;
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 1; i++) {
 			seed = rng.Next(6);
 			if (seed == 0) {
 				current = new DanceMajor();
@@ -105,7 +133,7 @@ public class GrandConductor : Conductor {
 	
 	public override Item[] Loot () {
 		System.Random rng = new System.Random();
-		int sp = 8 + rng.Next(5);
+		int sp = 6 + rng.Next(5);
 		Party.UseSP(sp * -1);
 		Item[] dropped = drops;
 		drops = new Item[0];

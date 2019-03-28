@@ -8,7 +8,7 @@ public class Democracy : Passive {
 	}
 	
 	public override TimedMethod[] CheckLead(bool player) {
-		TimedMethod[] promisePart = new TimedMethod[] {new TimedMethod(0, "Log", new object[] {""})};
+		TimedMethod[] promisePart = new TimedMethod[] {new TimedMethod("Null"), new TimedMethod("Null"), new TimedMethod("Null")};
 		if (promise == 2) {
 			promise--;
 		} else if (promise == 1 && attacked) {
@@ -18,7 +18,9 @@ public class Democracy : Passive {
 			self.GainDefense(-4);
 			promise--;
 			self.GetSpecial().modifier += 10;
-			promisePart = new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"The promise was broken! power and defense -4"})};
+			promisePart = new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"The promise was broken! Voter support is zero!"}),
+			    new TimedMethod(0, "CharLogSprite", new object[] {"-4", self.partyIndex, "power", player}),
+			    new TimedMethod(0, "CharLogSprite", new object[] {"-4", self.partyIndex, "defense", player})};
 		}
 		attacked = false;
 		int advantage;
@@ -30,7 +32,10 @@ public class Democracy : Passive {
 		self.GainCharge(advantage);
 		self.GainGuard(advantage);
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {
-			ToString() + " has an advantage of " + advantage.ToString()}), promisePart[0]};
+			ToString() + " has an advantage of " + advantage.ToString()}),
+			new TimedMethod(0, "CharLogSprite", new object[] {advantage.ToString(), self.partyIndex, "charge", player}),
+			new TimedMethod(0, "CharLogSprite", new object[] {advantage.ToString(), self.partyIndex, "guard", player}),
+			promisePart[0], promisePart[1], promisePart[2]};
 	}
 	
 	public override TimedMethod[] Initialize(bool player) {

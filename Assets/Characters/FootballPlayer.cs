@@ -13,13 +13,17 @@ public class FootballPlayer : Character {
 		int seed = rnd.Next(10);
 		TimedMethod[] moves;
 		if (seed < 5) {
-			Attacks.SetAudio("Blunt Hit", 45);
+			Attacks.SetAudio("Blunt Hit", 25);
 			moves = new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"The " + ToString() + " tackled "}),
-			    new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 3, 4}),  new TimedMethod(0, "Audio", new object[] {"Running"}),
+			    new TimedMethod(0, "Audio", new object[] {"Running"}),
 			    new TimedMethod(0, "StagnantAttack", new object[] {false, 5, 5, GetAccuracy(), true, true, false})};
 		} else if (seed < 8) {
-			moves = new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skill2"}),
-			    new TimedMethod(60, "Log", new object[] {"The " + ToString() + " is rallying. Team power has increased"})};
+			moves = new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"The " + ToString() + " is rallying. Team power has increased"}),
+			    new TimedMethod(0, "Audio", new object[] {"Whistle"}),
+				new TimedMethod(6, "CharLogSprite", new object[] {"1", 0, "power", false}),
+				new TimedMethod(6, "CharLogSprite", new object[] {"1", 1, "power", false}),
+				new TimedMethod(6, "CharLogSprite", new object[] {"1", 2, "power", false}),
+				new TimedMethod(6, "CharLogSprite", new object[] {"1", 3, "power", false})};
 			foreach (Character current in Party.enemies) {
 				if (current != null && current.GetAlive()) {
 					current.GainPower(1);
@@ -27,30 +31,29 @@ public class FootballPlayer : Character {
 			}
 		} else {
 			moves = new TimedMethod[] { new TimedMethod(0, "Audio", new object[] {"Metal Hit"}),
-			    new TimedMethod(60, "Log", new object[] {"The " + ToString() + " is guarding. Guard + 5"}),
-			    new TimedMethod("GetEnemy")};
-			SetGuard(GetGuard() + 5);
+			    new TimedMethod(60, "Log", new object[] {"The " + ToString() + " is guarding"}),
+			    new TimedMethod(0, "CharLogSprite", new object[] {"5", 0, "guard", false})};
+			GainGuard(5);
 		}
 		return moves;
 	}
 	
 	public override TimedMethod[] BasicAttack() {
 		TimedMethod[] attackPart;
+		Attacks.SetAudio("Blunt Hit", 25);
 		if (Party.BagContains(new Metronome())) {
-			attackPart = Attacks.Attack(this, Party.GetEnemy(), strength + 4, strength + 4, GetAccuracy(), true, true, false);
+			attackPart = Attacks.Attack(this, Party.GetEnemy(), strength + 5, strength + 5, GetAccuracy(), true, true, false);
 		} else {
 		    attackPart = Attacks.Attack(this, Party.GetEnemy(), strength + 2, strength + 7, GetAccuracy(), true, true, false);
 		}
-		Attacks.SetAudio("Blunt Hit", 45);
 		TimedMethod[] moves = new TimedMethod[attackPart.Length + 1];
-		moves[0] = new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 3, 4});
-		moves[1] = new TimedMethod(0, "Audio", new object[] {"Running"});
+		moves[0] = new TimedMethod(0, "Audio", new object[] {"Running"});
 		attackPart.CopyTo(moves, 1);
 		return moves;
 	}
 	
 	public override void CreateDrops() {
-		drops = ItemDrops.FromPool(new Item[] {new Whistle(), new Pizza(), new ProteinBar(), new Milk(), new Pizza(), new ProteinBar(), new Milk()},
+		drops = ItemDrops.FromPool(new Item[] {new Whistle(), new Pizza(), new ProteinBar(), new Football(), new Pizza(), new ProteinBar(), new Milk()},
 		    ItemDrops.Amount(1, 2));
 	}
 	

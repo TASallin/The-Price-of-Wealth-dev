@@ -10,7 +10,8 @@ public class UnstableLiquid : Special {
 	public override TimedMethod[] UseSupport (int i) {
 		Party.UseSP(GetCost() * -1);
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"You don't have time to do this"}),
-		    new TimedMethod(0, "Audio", new object[] {"Skip Turn"})};
+		    new TimedMethod(0, "Audio", new object[] {"Skip Turn"}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"SKIP", i, "skip", true})};
 	}
 	
 	public override void UseOutOfCombat () {

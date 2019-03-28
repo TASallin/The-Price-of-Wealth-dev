@@ -9,6 +9,7 @@ public class Defibrilator : Item {
 		}
 		Party.members[index].Heal(1);
 		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Tazer"}),
-		    new TimedMethod(60, "Log", new object[] {Party.members[index].ToString() + " was revived"})};
+		    new TimedMethod(60, "Log", new object[] {Party.members[index].ToString() + " was revived"}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"1", index, "healing", true})};
 	}
 }

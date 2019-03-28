@@ -4,11 +4,15 @@ public class Footwork : Passive {
 	
 	public override TimedMethod[] CheckLead(bool player) {
 		self.GainEvasion(3);
+		return new TimedMethod[0];if (!self.GetGooped()) {
+    		self.GainEvasion(3);
+			return new TimedMethod[] {new TimedMethod(0, "CharLogSprite", new object[] {"3", self.partyIndex, "evasion", player})};
+		}
 		return new TimedMethod[0];
 	}
 	
 	
 	public override TimedMethod[] Initialize(bool player) {
-		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {self.ToString() + " began their routine"})};
+		return new TimedMethod[] {new TimedMethod(0, "CharLogSprite", new object[] {"Dodgy 3", self.partyIndex, "dexterity", player})};
 	}
 }

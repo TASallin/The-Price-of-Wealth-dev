@@ -11,11 +11,11 @@ public class PaperPlane : Item {
 			blindPart = new TimedMethod[] {new TimedMethod("Null"), new TimedMethod("Null")};
 		}
 		TimedMethod[] attackPart = new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Small Swing"}),
-		    new TimedMethod(60, "StagnantAttack", new object[] {
+		    new TimedMethod(0, "StagnantAttack", new object[] {
 			true, Party.GetPlayer().GetStrength(), Party.GetPlayer().GetStrength() + 2, Party.GetPlayer().GetAccuracy(), true, true, false})};
-		TimedMethod[] total = new TimedMethod[2];
+		TimedMethod[] total = new TimedMethod[4];
 		attackPart.CopyTo(total, 0);
-		blindPart.CopyTo(total, 1);
+		blindPart.CopyTo(total, 2);
 		return total;
 	}
 	

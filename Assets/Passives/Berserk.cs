@@ -4,8 +4,9 @@ public class Berserk : Quirk {
 	
 	public override TimedMethod[] Initialize (bool player) {
 		self.GainPower(5);
-		self.SetDefense(self.GetDefense() - 5);
-		return new TimedMethod[0];
+		self.GainDefense(-5);
+		return new TimedMethod[] {new TimedMethod(0, "CharLogSprite", new object[] {"5", self.partyIndex, "power", self.GetPlayer()}),
+		    new TimedMethod(0, "CharLogSprite", new object[] {"-5", self.partyIndex, "defense", self.GetPlayer()})};
 	}
 	
 }

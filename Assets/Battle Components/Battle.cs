@@ -77,6 +77,7 @@ public class Battle : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        Debug.Log(Party.GetPlayer().partyIndex.ToString());
 		if (delay > 0) {
 			delay--;
 		} else {
@@ -279,8 +280,9 @@ public class Battle : MonoBehaviour {
 			guardStrength = 5;
 		}
 		lastGuard = Party.turn;
-		player.GainGuard(guardStrength);
-	    string message = player.ToString() + " gained " + guardStrength.ToString() + " guard";
+		Party.GetPlayer().GainGuard(guardStrength);
+		CharLogSprite(guardStrength.ToString(), Party.playerSlot - 1, "guard", true);
+	    string message = player.ToString() + " is guarding";
 		messageLog.SendMessage("SetMessage", message);
 		menu.SetActive(false);
 	    methodQueue.Enqueue(new TimedMethod(30, "EndTurn"));
@@ -289,10 +291,11 @@ public class Battle : MonoBehaviour {
 	}
 	
 	public void Dodge () {
-		player.SetEvasion(player.GetEvasion() + 5);
-		string message = player.ToString() + " gained 5 evasion";
+		Party.GetPlayer().GainEvasion(5);
+		string message = player.ToString() + " is dodging";
 		messageLog.SendMessage("SetMessage", message);
 		menu.SetActive(false);
+		CharLogSprite("5", Party.playerSlot - 1, "evasion", true);
 	    methodQueue.Enqueue(new TimedMethod(30, "EndTurn"));
 		defenseMenu.SetActive(false);
 	}
@@ -474,7 +477,10 @@ public class Battle : MonoBehaviour {
 	}
 	
 	public void NextTurn (bool isEnemy) {
+		sprites.GetComponent<CharSprites>().UnfreezeAll();
 		if (isEnemy) {
+			statusBars.transform.Find("Player Status").GetComponent<StatusBarP>().Check();
+		    statusBars.transform.Find("Enemy Status").GetComponent<StatusBarE>().Check();
 		   	TimedMethod[] statuses;
 			for (int i = 0; i < 4; i++) {
 				if (i == Party.enemySlot - 1) {
@@ -545,11 +551,16 @@ public class Battle : MonoBehaviour {
 				methodQueue.Enqueue(new TimedMethod(0, "Freed"));
 			}
 			if (Party.GetPlayer().GetPassing()) {
+				Party.GetPlayer().status.passing = false;
+				CharLogSprite("SKIP", Party.playerSlot - 1, "skip",  true);
+				Audio("Skip Turn");
 				methodQueue.Enqueue(new TimedMethod("EndTurn"));
 			} else {
 		        methodQueue.Enqueue(new TimedMethod(0, "ToggleMenu", new object[] {true}));
 			    methodQueue.Enqueue(new TimedMethod(0, "Log", new object[] {""}));
 			}
+			statusBars.transform.Find("Player Status").GetComponent<StatusBarP>().Check();
+		    statusBars.transform.Find("Enemy Status").GetComponent<StatusBarE>().Check();
 	}
 	
 	public void EndTurn () {
@@ -599,7 +610,10 @@ public class Battle : MonoBehaviour {
 	public void Skip () {
 		if (Party.GetPlayer().GetGooped() && !(Party.GetPlayer().GetAsleep() || Party.GetPlayer().GetStunned())) {
 			Party.GetPlayer().status.gooped = false;
-			methodQueue.Enqueue(new TimedMethod(60, "Log", new object[] {"The goop was cleaned"}));
+			methodQueue.Enqueue(new TimedMethod(0, "CharLogSprite", new object[] {"Cleaned", Party.playerSlot - 1, "goop", true}));
+			//methodQueue.Enqueue(new TimedMethod(60, "Log", new object[] {"The goop was cleaned"}));
+		} else {
+			methodQueue.Enqueue(new TimedMethod(0, "CharLogSprite", new object[] {"SKIP", Party.playerSlot - 1, "skip", true}));
 		}
 		menu.SetActive(false);
 		methodQueue.Enqueue(new TimedMethod(0, "EndTurn"));
@@ -616,8 +630,35 @@ public class Battle : MonoBehaviour {
 	    messageLog.SendMessage("SetMessage", message);	
 	}
 	
-	public void CharLog (string message, int index) {
-		sprites.GetComponent<CharSprites>().Log(message, index);
+	public void CharLog (string message, int index, bool player) {
+		if (player) {
+	    	sprites.GetComponent<CharSprites>().Log(message, index);
+		} else {
+			sprites.GetComponent<CharSprites>().Log(message, index + 4);
+		}
+	}
+	
+	public void CharLogDelay(string message, int index, string sprite, bool player) {
+		methodQueue.Enqueue(new TimedMethod(0, "CharLogSprite", new object[] {message, index, sprite, player}));
+	}
+	
+	public void CharLogSprite(string message, int index, string sprite, bool player) {
+		if (player) {
+		    sprites.GetComponent<CharSprites>().LogSprite(message, index, sprite);
+		} else {
+			sprites.GetComponent<CharSprites>().LogSprite(message, index + 4, sprite);
+		}
+	}
+	
+	public void ChangeHP(int damage, int index, bool player) {
+		if (player) {
+			sprites.GetComponent<CharSprites>().ChangeHP(damage, index);
+		} else {
+			sprites.GetComponent<CharSprites>().ChangeHP(damage, index + 4);
+		}
+	}
+	public void RefreshStatusP() {
+	    statusBars.transform.Find("Player Status").GetComponent<StatusBarP>().Check();
 	}
 	
 	public void PartyDeath(Character dead) {
@@ -635,6 +676,8 @@ public class Battle : MonoBehaviour {
 	public void Win () {
 		    methodQueue.Clear();
 			Score.victories++;
+			statusBars.transform.Find("Player Status").GetComponent<StatusBarP>().Check();
+		    statusBars.transform.Find("Enemy Status").GetComponent<StatusBarE>().Check();
 			if (Party.fullRecruit != null) {
 				if (Party.playerCount == 4) {
 				    recruitMember.SetActive(true);

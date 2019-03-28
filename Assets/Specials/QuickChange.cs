@@ -6,6 +6,7 @@ public class QuickChange : Special {
 		if (i == Party.playerSlot - 1) {
 			Party.UseSP(GetCost() * -1);
 		}
-		return new TimedMethod[] {new TimedMethod(0, "SwitchTo", new object[] {i + 1}), new TimedMethod("ContinueTurn")};
+		return new TimedMethod[] {new TimedMethod(0, "SwitchTo", new object[] {i + 1}), new TimedMethod("RefreshStatusP"),
+    		new TimedMethod("ContinueTurn")};
 	}
 }

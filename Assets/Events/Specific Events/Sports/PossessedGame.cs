@@ -14,6 +14,7 @@ public class PossessedGame : Event {
 		optionText1 = "Play along (fight)";
 		options2 = new LinkedList<TimedMethod>();
 	    options2.AddLast(new TimedMethod(0, "DamageAll", new object[] {5}));
+		options2.AddLast(new TimedMethod("Resolve"));
 		optionText2 = "Cower to the sidelines (5 damage to party)";
 		if (Party.PartyContains(new FootballPlayer()) >= 0) {
 			options3 = new LinkedList<TimedMethod>();

@@ -24,7 +24,11 @@ public class Cooking : Passive {
 			    }
 		    }
 	    	return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Heal"}),
-			    new TimedMethod(60, "Log", new object[] {self.ToString() + "'s cooking restored health"})};
+			    new TimedMethod(60, "Log", new object[] {self.ToString() + "'s cooking restored health"}),
+				new TimedMethod(0, "CharLogSprite", new object[] {"2", 0, "healing", player}),
+				new TimedMethod(0, "CharLogSprite", new object[] {"2", 1, "healing", player}),
+				new TimedMethod(0, "CharLogSprite", new object[] {"2", 2, "healing", player}),
+				new TimedMethod(0, "CharLogSprite", new object[] {"2", 3, "healing", player})};
 		}
 		return new TimedMethod[0];
 	}

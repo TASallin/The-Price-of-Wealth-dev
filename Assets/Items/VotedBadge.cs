@@ -8,7 +8,8 @@ public class VotedBadge : Item {
 	
 	public override TimedMethod[] Use () {
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"The voted badge was discarded, never to be seen again :("}),
-		    new TimedMethod(0, "Audio", new object[] {"Skip Turn"})};
+		    new TimedMethod(0, "Audio", new object[] {"Skip Turn"}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"SKIP", Party.playerSlot - 1, "skip", true})};
 	}
 	
 	public override void UseOutOfCombat (int index) {}

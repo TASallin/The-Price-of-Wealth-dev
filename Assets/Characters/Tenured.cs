@@ -2,7 +2,7 @@ public class Tenured : Instructor {
 	
 	
 	public Tenured () {
-		health = 35; maxHP = 35; strength = 3; dexterity = 4; type = "Tenured"; passive = new Leader(this);
+		health = 45; maxHP = 45; strength = 3; dexterity = 4; type = "Tenured"; passive = new Leader(this);
 		quirk = Quirk.GetQuirk(this); champion = true; recruitable = false;
 		cycle = true; turn1 = true; CreateDrops();
 	}
@@ -30,9 +30,9 @@ public class Tenured : Instructor {
 	}
 	
 	public TimedMethod[] Attack() {
-		Attacks.SetAudio("Slap", 10);
+		Attacks.SetAudio("Slap", 6);
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " attacked"}),
-		    new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 5, 6}), new TimedMethod(0, "Audio", new object[] {"Small Swing"}),
+		    new TimedMethod(0, "Audio", new object[] {"Small Swing"}),
 		    new TimedMethod(0, "StagnantAttack", new object[] {false, 3, 3, GetAccuracy(), true, true, false})};
 	}
 	
@@ -43,32 +43,55 @@ public class Tenured : Instructor {
 	}
 	
 	public TimedMethod[] HighHorse () {
-		power += 3; guard += 4; evasion += 4;
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skill3"}),
-		    new TimedMethod(60, "Log", new object[] {ToString() + " gloated about her position"})};
+		TimedMethod evadePart = new TimedMethod("Null");
+		if (!GetGooped()) {
+			evadePart = new TimedMethod(0, "CharLogSprite", new object[] {"4", Party.enemySlot - 1, "evasion", false});
+		}
+		GainPower(3); GainGuard(4); GainEvasion(4);
+		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Whistle"}),
+		    new TimedMethod(60, "Log", new object[] {ToString() + " gloated about her position"}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"3", Party.enemySlot - 1, "power", false}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"4", Party.enemySlot - 1, "guard", false}), evadePart};
 	}
 	
 	public TimedMethod[] Insult () {
+		TimedMethod[] statPart = new TimedMethod[] {new TimedMethod("Null"), new TimedMethod("Null")};
 		if (Attacks.EvasionCycle(this, Party.GetPlayer())) {
 			Party.GetPlayer().GainGuard(-6);
 			Party.GetPlayer().GainCharge(-6);
+			statPart[0] = new TimedMethod(0, "CharLogSprite", new object[] {"-6", Party.playerSlot - 1, "charge", true});
+			statPart[1] = new TimedMethod(0, "CharLogSprite", new object[] {"-6", Party.playerSlot - 1, "guard", true});
 		}
-		charge += 5;
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skill3"}), new TimedMethod(0, "Audio", new object[] {"Poison"}),
-		    new TimedMethod(60, "Log", new object[] {ToString() + " called you a failure, worthless, ect"})};
+		GainCharge(5);
+		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Poison"}),
+		    new TimedMethod(60, "Log", new object[] {ToString() + " called you a failure, worthless, ect"}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"5", Party.enemySlot - 1, "charge", false}), statPart[0], statPart[1]};
 	}
 	
 	public override TimedMethod[] Lecture () {
 		TimedMethod[] sleepPart;
-		if (Attacks.EvasionCycle(this, Party.GetPlayer())) {
-		    sleepPart = Party.GetPlayer().status.Sleep();
-			Status.NullifyAttack(Party.GetPlayer()); Status.NullifyDefense(Party.GetPlayer());
-		} else {
-		    return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Blah"}), new TimedMethod(0, "Audio", new object[] {"Filibuster"}),
-			    new TimedMethod(60, "Log", new object[] {ToString() + " lectured. It went over your head"})};
+		TimedMethod[] totalSleep = new TimedMethod[] {new TimedMethod("Null"), new TimedMethod("Null"), new TimedMethod("Null"),
+	    	new TimedMethod("Null"), new TimedMethod("Null"), new TimedMethod("Null"), new TimedMethod("Null"), new TimedMethod("Null"),
+			new TimedMethod("Null"), new TimedMethod("Null"), new TimedMethod("Null"), new TimedMethod("Null"), new TimedMethod("Null"),
+			new TimedMethod("Null"), new TimedMethod("Null"), new TimedMethod("Null")};
+		int index = 0;
+		foreach (Character c in Party.members) {
+			if (c != null && c.GetAlive() && Attacks.EvasionCycle(this, c)) {
+		        sleepPart = c.status.Sleep();
+				Status.NullifyAttack(c); Status.NullifyDefense(c);
+				totalSleep[index + 2] = new TimedMethod(0, "CharLogSprite", new object[] {"atk reset", c.partyIndex, "nullAttack",  true});
+				totalSleep[index + 3] = new TimedMethod(0, "CharLogSprite", new object[] {"def reset", c.partyIndex, "nullDefense",  true});
+	    	} else {
+    			sleepPart = new TimedMethod[] {new TimedMethod("Null"), new TimedMethod("Null")};
+		    }
+			totalSleep[index] = sleepPart[0];
+			totalSleep[index + 1] = sleepPart[1];
+			index += 4;
 		}
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Blah"}), new TimedMethod(0, "Audio", new object[] {"Filibuster"}),
-		    new TimedMethod(60, "Log", new object[] {ToString() + " lectured"}), sleepPart[0], sleepPart[1]};
+		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Filibuster"}),
+		    new TimedMethod(60, "Log", new object[] {ToString() + " lectured"}), totalSleep[0], totalSleep[1], totalSleep[2], totalSleep[3],
+			    totalSleep[4], totalSleep[5], totalSleep[6], totalSleep[7], totalSleep[8], totalSleep[9], totalSleep[10], totalSleep[11],
+				totalSleep[12], totalSleep[13], totalSleep[14], totalSleep[15]};
 	}
 	
 	public override void CreateDrops() {

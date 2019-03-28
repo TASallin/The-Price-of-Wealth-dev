@@ -5,7 +5,7 @@ public class BusinessMajor : Character {
 	
 	public BusinessMajor() {
 		health = 18; maxHP = 18; strength = 3; power = 0; charge = 0; defense = 0; guard = 0;
-		baseAccuracy = 15; accuracy = 15; dexterity = 3; evasion = 0; type = "Business Major"; passive = new Profit(this);
+		baseAccuracy = 15; accuracy = 15; dexterity = 5; evasion = 0; type = "Business Major"; passive = new Profit(this);
 		quirk = Quirk.GetQuirk(this); special = new Bargain(); special2 = new ShadyDeal(); player = false; champion = false; recruitable = true;
 		summoned = false; stolen = false; CreateDrops(); attackEffect = "chance to blind";
 	}
@@ -37,43 +37,41 @@ public class BusinessMajor : Character {
 	    	blindPart = new TimedMethod[] {new TimedMethod("Null"), new TimedMethod("Null")};
 		}
 		TimedMethod[] attackPart;
+		Attacks.SetAudio("Knife", 15);
 		if (Party.BagContains(new Metronome())) {
-			attackPart = Attacks.Attack(this, Party.GetEnemy(), strength + 2, strength + 2, GetAccuracy(), true, true, false);
+			attackPart = Attacks.Attack(this, Party.GetEnemy(), strength + 3, strength + 3, GetAccuracy(), true, true, false);
 		} else {
 		    attackPart = Attacks.Attack(this, Party.GetEnemy());
 		}
-		Attacks.SetAudio("Knife", 20);
-		TimedMethod[] moves = new TimedMethod[attackPart.Length + 4];
-		moves[0] = new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 5, 6});
-		moves[1] = new TimedMethod(0, "Audio", new object[] {"Knife Throw"});
-		attackPart.CopyTo(moves, 2);
+		TimedMethod[] moves = new TimedMethod[attackPart.Length + 3];
+		moves[0] = new TimedMethod(0, "Audio", new object[] {"Knife Throw"});
+		attackPart.CopyTo(moves, 1);
 		moves[moves.Length - 2] = blindPart[0];
 		moves[moves.Length - 1] = blindPart[1];
 		return moves;
 	}
 	
 	public TimedMethod[] Attack () {
-		Attacks.SetAudio("Knife", 20);
+		Attacks.SetAudio("Knife", 15);
 	    return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " threw the credit card"}),
-		    new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 5, 6}), new TimedMethod(0, "Audio", new object[] {"Knife Throw"}),
+		    new TimedMethod(0, "Audio", new object[] {"Knife Throw"}),
 		    new TimedMethod(0, "StagnantAttack", new object[] {false, 4, 4, GetAccuracy(), true, true, false})};
 	}
 	
 	public TimedMethod[] Invest() {
-		power += 3; defense -= 1;
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skill3"}),
+		GainPower(3); GainDefense(-1);
+		return new TimedMethod[] {new TimedMethod(0, "CharLogSprite", new object[] {"3", Party.enemySlot - 1, "power", false}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"-1", Party.enemySlot - 1, "defense", false}),
 		    new TimedMethod(0, "AudioAfter", new object[] {"Coin", 10}),
-		    new TimedMethod(60, "Log", new object[] {ToString() + " invested. Power+3 and Defense-1"})};
+		    new TimedMethod(60, "Log", new object[] {ToString() + " invested"})};
 	}
 	
 	public TimedMethod[] Bargain() {
 		if (Attacks.EvasionCycle(this, Party.GetPlayer())) {
-		    return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Steal1"}), 
-			    new TimedMethod(0, "AudioAfter", new object[] {"Steal", 20}),
+		    return new TimedMethod[] {new TimedMethod(0, "AudioAfter", new object[] {"Steal", 20}),
 			    new TimedMethod(60, "Log", new object[] {ToString() + " made a bargain"}), Party.StealItem()[0]};
 		} else {
-            return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Steal1"}),
-			    new TimedMethod(0, "AudioAfter", new object[] {"Steal", 20}),
+            return new TimedMethod[] {new TimedMethod(0, "AudioAfter", new object[] {"Steal", 20}),
 			    new TimedMethod(60, "Log", new object[] {ToString() + " failed to make a bargain"})};
 		}			
 	}
@@ -109,7 +107,8 @@ public class BusinessMajor : Character {
 	public TimedMethod[] Switch () {
 		if (GetGooped()) {
 			return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " tried to switch out but is stuck"}),
-			    new TimedMethod(0, "Audio", new object[] {"Skip Turn"})};
+			    new TimedMethod(0, "Audio", new object[] {"Skip Turn"}),
+				new TimedMethod(0, "CharLogSprite", new object[] {"SKIP", Party.enemySlot - 1, "skip", false}),};
 		}
 		int former = Party.enemySlot;
 		for (int i = 0; i < 4; i++) {
@@ -120,11 +119,13 @@ public class BusinessMajor : Character {
 			}
 		}
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " was halted by taxes"}),
-		    new TimedMethod(0, "Audio", new object[] {"Skip Turn"})};
+		    new TimedMethod(0, "Audio", new object[] {"Skip Turn"}), 
+			new TimedMethod(0, "CharLogSprite", new object[] {"SKIP", Party.enemySlot - 1, "skip", false}),};
 	}
 	
 	public override void CreateDrops() {
-		drops = ItemDrops.FromPool(new Item[] {new Calculator(), new Shuttle(), new ProteinBar(), new Whistle()}, ItemDrops.Amount(1, 2));
+		drops = ItemDrops.FromPool(new Item[] {new Calculator(), new Shuttle(), new ProteinBar(), new Whistle(), new PinkSlip(),
+		    new Smartphone()}, ItemDrops.Amount(1, 2));
 	}
 	
 	public override Item[] Loot () {

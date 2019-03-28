@@ -7,14 +7,19 @@ public class DefeatDepower : Passive {
 	public override TimedMethod[] Check(bool player) {
 		int count; Character[] team;
 		if (player) {count = Party.playerCount; team = Party.members;} else {count = Party.enemyCount; team = Party.enemies;}
+		int amount = -4 * (previousCount - count);
+		previousCount = count;
 		if (previousCount > count) {
 			foreach (Character c in team) {
 				if (c != null && c.GetAlive()) {
-					c.GainPower(-4 * (previousCount - count));
+					c.GainPower(amount);
 				}
 			}
-		    previousCount = count;
-		    return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"Morale has fallen after a team-member's defeat"})};
+		    return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"Morale has fallen after a team-member's defeat"}),
+			new TimedMethod(0, "CharLogSprite", new object[] {amount.ToString(), 0, "power", player}),
+			new TimedMethod(0, "CharLogSprite", new object[] {amount.ToString(), 1, "power", player}),
+			new TimedMethod(0, "CharLogSprite", new object[] {amount.ToString(), 2, "power", player}),
+			new TimedMethod(0, "CharLogSprite", new object[] {amount.ToString(), 3, "power", player})};
 		}
 		previousCount = count;
 		return new TimedMethod[0];

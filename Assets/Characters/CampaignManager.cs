@@ -23,11 +23,12 @@ public class CampaignManager : Character {
 	
 	public TimedMethod[] Plan() {
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " devised a plan"}),
-		    new TimedMethod(0, "Audio", new object[] {"Skip Turn"})};
+		    new TimedMethod(0, "Audio", new object[] {"Skip Turn"}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"SKIP", Party.enemySlot - 1, "skip", false}),};
 	}
 	
 	public TimedMethod[] Attack () {
-		Attacks.SetAudio("Blunt Hit", 10);
+		Attacks.SetAudio("Blunt Hit", 6);
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " defended the campaign"}),
 		    new TimedMethod(0, "Audio", new object[] {"Small Swing"}),
 		    new TimedMethod(0, "StagnantAttack", new object[] {false, 5, 5, GetAccuracy(), true, true, false})};
@@ -44,6 +45,9 @@ public class CampaignManager : Character {
 		Status.NullifyDefense(pol);
 		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Finale"}), new TimedMethod(0, "AudioAfter", new object[] {"Nullify", 30}),
 		    new TimedMethod(60, "Log", new object[] {ToString() + " Caused the politician's grand return"}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"10", Party.enemySlot - 1, "charge", false}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"Atk Reset", Party.enemySlot - 1, "nullAttack", false}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"Def Reset", Party.enemySlot - 1, "nullDefense", false}),
 		    new TimedMethod(0, "EnemySwitch", new object[] {1, 2})};
 	}
 }

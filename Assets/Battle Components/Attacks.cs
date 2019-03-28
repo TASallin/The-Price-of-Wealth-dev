@@ -18,6 +18,7 @@ public static class Attacks {
 	public static TimedMethod[] Attack(Character atkr, Character targ, int lower, int upper, int accuracy, bool usesPower, bool consumeCharge, bool piercing) {
 		string text;
 		TimedMethod audioPart;
+		TimedMethod freezePart = new TimedMethod("Null");
 		if (accuracy > targ.GetEvasion()) {
 			System.Random rnd = new System.Random();
 			int power = 0;
@@ -32,7 +33,7 @@ public static class Attacks {
 			//targ.SetHealth(targ.GetHealth() - damage);
 		    targ.Damage(damage);
 			audioPart = new TimedMethod(0, "AudioAfter", new object[] {audio, delay}); 
-			//text = targ.ToString() + " takes " + damage.ToString() + " damage";
+			freezePart = new TimedMethod(0, "ChangeHP", new object[] {damage, targ.partyIndex, targ.GetPlayer()});
 			text = damage.ToString();
 			if (targ.GetHealth() <= 0) {
 				//targ.SetHealth(0);
@@ -48,10 +49,12 @@ public static class Attacks {
 			text = "miss";
 			audioPart = new TimedMethod("Null");
 		}
+		int logDelay = 0;
 		if (consumeCharge) {
 		    atkr.SetCharge(0);
+			logDelay = 60;
 		}
-		return new TimedMethod[] {audioPart, new TimedMethod(60, "CharLog", new object[] {text, targ.partyIndex})};
+		return new TimedMethod[] {audioPart, new TimedMethod(logDelay, "CharLog", new object[] {text, targ.partyIndex, targ.GetPlayer()}), freezePart};
 	}
 	
 	public static bool EvasionCycle(int accuracy, Character targ) {

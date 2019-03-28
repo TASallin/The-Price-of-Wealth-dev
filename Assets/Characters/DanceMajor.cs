@@ -21,40 +21,52 @@ public class DanceMajor : Character {
 	
 	public override TimedMethod[] BasicAttack() {
 		TimedMethod[] attackPart;
+		Attacks.SetAudio("Knife", 6);
 		if (Party.BagContains(new Metronome())) {
-			attackPart = Attacks.Attack(this, Party.GetEnemy(), strength + 2, strength + 2, GetAccuracy(), true, true, false);
+			attackPart = Attacks.Attack(this, Party.GetEnemy(), strength + 3, strength + 3, GetAccuracy(), true, true, false);
 		} else {
 		    attackPart = Attacks.Attack(this, Party.GetEnemy());
 		}
 		GainEvasion(3);
-		Attacks.SetAudio("Knife", 10);
+		TimedMethod evadePart = new TimedMethod("Null");
+		if (!GetGooped()) {
+			evadePart = new TimedMethod(0, "CharLogSprite", new object[] {"3", Party.playerSlot - 1, "evasion", true});
+		}
 		TimedMethod[] moves = new TimedMethod[attackPart.Length + 2];
-		moves[0] = new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 1, 2});
-		moves[1] = new TimedMethod(0, "Audio", new object[] {"Small Swing"});
+		moves[0] = new TimedMethod(0, "Audio", new object[] {"Small Swing"});
+		moves[1] = evadePart;
 		attackPart.CopyTo(moves, 2);
 		return moves;
 	}
 	
 	public TimedMethod[] Attack() {
-		GainEvasion(5);
-		Attacks.SetAudio("Knife", 10);
+		GainEvasion(4);
+		TimedMethod evadePart = new TimedMethod("Null");
+		if (!GetGooped()) {
+			evadePart = new TimedMethod(0, "CharLogSprite", new object[] {"4", Party.enemySlot - 1, "evasion", false});
+		}
+		Attacks.SetAudio("Knife", 6);
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " made a darting attack"}),
-		    new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 1, 2}), new TimedMethod(0, "Audio", new object[] {"Small Swing"}),
-		    new TimedMethod(0, "StagnantAttack", new object[] {false, 3, 3, GetAccuracy(), true, true, false})};
+		    new TimedMethod(0, "Audio", new object[] {"Small Swing"}),
+		    new TimedMethod(0, "StagnantAttack", new object[] {false, 2, 4, GetAccuracy(), true, true, false}),evadePart};
 	}
-	
+
 	public TimedMethod[] Dodge() {
 		GainEvasion(10);
+		TimedMethod evadePart = new TimedMethod("Null");
+		if (!GetGooped()) {
+			evadePart = new TimedMethod(0, "CharLogSprite", new object[] {"3", Party.enemySlot - 1, "evasion", false});
+		}
 		return new TimedMethod[] {new TimedMethod(0, "AudioAfter", new object[] {"Big Swing", 30}),
-		    new TimedMethod(60, "Log", new object[] {ToString() + " is dodging"})};
+		    new TimedMethod(60, "Log", new object[] {ToString() + " is dodging"}), evadePart};
 	}
 	
 	public TimedMethod[] Finish() {
 		int atk = evasion;
 		evasion = 0;
-		Attacks.SetAudio("Blunt Hit", 30);
+		Attacks.SetAudio("Blunt Hit", 20);
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " used their positioning for a big attack"}),
-		    new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 1, 2}), new TimedMethod(0, "AudioAfter", new object[] {"Big Swing", 20}),
+		    new TimedMethod(0, "Audio", new object[] {"Big Swing"}),
 		    new TimedMethod(0, "StagnantAttack", new object[] {false, atk, atk, GetAccuracy(), true, true, false})};
 	}
 	

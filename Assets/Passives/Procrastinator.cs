@@ -10,9 +10,10 @@ public class Procrastinator : Quirk {
     public override TimedMethod[] Check (bool player) {
 		if (turns <= 15) {
 		    turns++;
-			self.SetPower(self.GetPower() + 1); self.GainAccuracy(1);
+			self.GainPower(1); self.GainAccuracy(1);
 		}
-		return new TimedMethod[0];
+		return new TimedMethod[] {new TimedMethod(0, "CharLogSprite", new object[] {"1", self.partyIndex, "power", player}),
+		    new TimedMethod(0, "CharLogSprite", new object[] {"1", self.partyIndex, "accuracy", player})};
 	}
 	
 	public override TimedMethod[] CheckLead (bool player) {
@@ -20,10 +21,10 @@ public class Procrastinator : Quirk {
 	}
 	
 	public override TimedMethod[] Initialize (bool player) {
-		self.SetPower(self.GetPower() - 6); self.GainAccuracy(-6);
+		self.GainPower(-6); self.GainAccuracy(-6);
 		turns = 0;
-		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {self.ToString() + " is procrastinating"})};
-		
+		return new TimedMethod[] {new TimedMethod(0, "CharLogSprite", new object[] {"-6", self.partyIndex, "power", player}),
+		    new TimedMethod(0, "CharLogSprite", new object[] {"-6", self.partyIndex, "accuracy", player})};
 	}
 
 }

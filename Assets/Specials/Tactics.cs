@@ -10,6 +10,14 @@ public class Tactics : Special {
 			}
 		}
 		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skill2"}), new TimedMethod(0, "Audio", new object[] {"Recruit"}),
-		    new TimedMethod(60, "Log", new object[] {Party.members[i].ToString() + " implemented tactics"})};
+		    new TimedMethod(0, "Log", new object[] {Party.members[i].ToString() + " implemented tactics"}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"2", 0, "accuracy", true}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"2", 1, "accuracy", true}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"2", 2, "accuracy", true}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"2", 3, "accuracy", true}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"4", 0, "evasion", true}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"4", 1, "evasion", true}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"4", 2, "evasion", true}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"4", 3, "evasion", true})};
 	}
 }

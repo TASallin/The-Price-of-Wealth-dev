@@ -142,8 +142,8 @@ public class PartyMenu : MonoBehaviour {
 	}
 	
 	public void Replace () {
-		Party.fullRecruit.SetPlayer(true);
-		Party.members[active - 1] = Party.fullRecruit;
+		Party.members[active - 1] = null;
+		Party.AddPlayer(Party.fullRecruit);
 		Party.latestRecruit = Party.fullRecruit;
 		Party.fullRecruit = null;
 	}

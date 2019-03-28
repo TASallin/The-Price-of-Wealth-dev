@@ -9,7 +9,8 @@ public class DexPotion : Item {
 		Party.AddItem(new Flask());
 		Party.members[i].GainDexterity(1);
 		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Drink"}),
-		    new TimedMethod(60, "Log", new object[] {Party.members[i].GetName() + " Got faster!"})};
+		    new TimedMethod(60, "Log", new object[] {Party.members[i].GetName() + " Got faster!"}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"1", i, "dexterity", true})};
 	}
 
     public override void UseOutOfCombat(int i) {

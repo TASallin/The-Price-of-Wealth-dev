@@ -6,7 +6,8 @@ public class Antibiotics : Item {
 	public override TimedMethod[] UseSelected (int i) {
 		Party.members[i].status.poisoned = 0;
 		Party.members[i].status.poisonImmune = true;
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Powder"})};
+		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Powder"}),
+		    new TimedMethod(0, "CharLogSprite", new object[] {"IMMUNE", i, "poison", true})};
 	}
 	
 	public override void UseOutOfCombat(int i) {

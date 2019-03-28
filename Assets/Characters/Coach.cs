@@ -24,14 +24,18 @@ public class Coach : Character {
 				c.GainPower(3);
 			}
 		}
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skill2"}),
-		    new TimedMethod(60, "Log", new object[] {ToString() + " gave a pep talk. Team power increased"})};
+		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Metal Hit"}),
+		    new TimedMethod(60, "Log", new object[] {ToString() + " gave a pep talk. Team power increased"}),
+			new TimedMethod(6, "CharLogSprite", new object[] {"3", 0, "power", false}),
+			new TimedMethod(6, "CharLogSprite", new object[] {"3", 1, "power", false}),
+			new TimedMethod(6, "CharLogSprite", new object[] {"3", 2, "power", false}),
+			new TimedMethod(6, "CharLogSprite", new object[] {"3", 3, "power", false})};
 	}
 	
 	public TimedMethod[] Attack() {
-		Attacks.SetAudio("Blunt Hit", 30);
+		Attacks.SetAudio("Blunt Hit", 20);
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " threw a football"}),
-		    new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 3, 4}), new TimedMethod(0, "Audio", new object[] {"Small Swing"}),
+		    new TimedMethod(0, "Audio", new object[] {"Missile"}),
 	    	new TimedMethod(0, "StagnantAttack", new object[] {false, 3, 3, GetAccuracy(), true, true, false})};
 	}
 	
@@ -39,6 +43,7 @@ public class Coach : Character {
 		if (GetGooped()) {
 			status.gooped = false;
 			return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " escaped the goop"}),
+			    new TimedMethod(0, "CharLogSprite", new object[] {"Cleaned", 0, "goop", false}),
 			    new TimedMethod(0, "Audio", new object[] {"Clean"})};
 		}
 		if (Party.enemyCount > 1) {

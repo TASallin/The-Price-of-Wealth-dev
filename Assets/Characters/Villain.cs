@@ -85,7 +85,8 @@ public class Villain : Character {
 	public TimedMethod[] Steroid () {
 		GainPower(3);
 		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Knife"}),
-		    new TimedMethod(60, "Log", new object[] {"The Villain applied steroids"})};
+		    new TimedMethod(60, "Log", new object[] {"The Villain applied steroids"}),
+		    new TimedMethod(0, "CharLogSprite", new object[] {"3", Party.enemySlot - 1, "power"})};
 	}
 	
 	public TimedMethod[] Poison() {
@@ -98,28 +99,38 @@ public class Villain : Character {
 	}
 	
 	public TimedMethod[] Smoke() {
-		evasion += 10;
+		TimedMethod evadePart = new TimedMethod("Null");
+		GainEvasion(10);
+		if (!GetGooped()) {
+			evadePart = new TimedMethod(0, "CharLogSprite", new object[] {"10", Party.enemySlot - 1, "evasion", false});
+		}
 		TimedMethod[] blindPart = new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"miss"}), new TimedMethod("Null")};
 	    if (Attacks.EvasionCycle(this, Party.GetPlayer())) {
 		    blindPart = Party.GetPlayer().status.Blind(7);
 	    }
 		return new TimedMethod[] {new TimedMethod(0, "AudioAfter", new object[] {"S Explosion", 20}),
-		    new TimedMethod(60, "Log", new object[] {"The Villain threw a smoke bomb"}), blindPart[0], blindPart[1]};
+		    new TimedMethod(60, "Log", new object[] {"The Villain threw a smoke bomb"}), blindPart[0], blindPart[1], evadePart};
 	}
 	
 	public TimedMethod[] Duel() {
-		Party.GetPlayer().GainEvasion(Party.GetPlayer().GetEvasion() / 2);
+		int amount = Party.GetPlayer().GetEvasion() / 2;
+		Party.GetPlayer().SetEvasion(Party.GetPlayer().GetEvasion() / 2);
 		GainGuard(10);
 		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Poison"}),
-		    new TimedMethod(60, "Log", new object[] {"The Villain gave an insulting taunt. Evasion halved"})};
+		    new TimedMethod(60, "Log", new object[] {"The Villain gave an insulting taunt. Evasion halved"}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"10", Party.enemySlot - 1, "guard", false}),
+			new TimedMethod(0, "CharLogSprite", new object[] {amount.ToString(), Party.playerSlot - 1, "evasion", true})};
 	}
 	
 	public TimedMethod[] Drug() {
 		if (Attacks.EvasionCycle(this, Party.GetEnemy())) {
 			Status.NullifyAttack(Party.GetPlayer());
 			Status.NullifyDefense(Party.GetPlayer());
+			TimedMethod[] apathyPart = Party.GetPlayer().status.CauseApathy(2);
 			return new TimedMethod[] {new TimedMethod(0, "AudioAfter", new object[] {"Knife", 15}), new TimedMethod(60, "Log", new object[] {
-				"The Villain injected an unstable formula"}), Party.GetPlayer().status.CauseApathy(2)[0]};
+				"The Villain injected an unstable formula"}), apathyPart[0], apathyPart[1],
+				new TimedMethod(0, "CharLogSprite", new object[] {"atk reset", Party.playerSlot - 1, "nullAttack", true}),
+				new TimedMethod(0, "CharLogSprite", new object[] {"def reset", Party.playerSlot - 1, "nullDefense", true})};
 		} else {
 			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Small Swing"}),
     			new TimedMethod(60, "Log", new object[] {"The Villain missed with an unstable formula"})};
@@ -142,7 +153,9 @@ public class Villain : Character {
 			status.gooped = false;
 			GainEvasion(10);
 			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"S Explosion"}),
-			    new TimedMethod(60, "Log", new object[] {"The Villain escaped the goop with a smoke bomb"})};
+			    new TimedMethod(60, "Log", new object[] {"The Villain escaped the goop with a smoke bomb"}),
+				new TimedMethod(0, "CharLogSprite", new object[] {"Cleaned", Party.playerSlot - 1, "goop", false}),
+				new TimedMethod(0, "CharLogSprite", new object[] {"10", Party.enemySlot - 1, "evasion", false})};
 		}
 		for (int i = 1; i < 4; i++) {
 			if (Party.enemies[i] != null && Party.enemies[i].GetAlive()) {

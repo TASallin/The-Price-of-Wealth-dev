@@ -4,7 +4,8 @@ public class SlimeGoo : Item {
 	
 	public override TimedMethod[] Use() {
 		if (Attacks.EvasionCycle(Party.GetPlayer(), Party.GetEnemy())) {
-			return Party.GetEnemy().status.Goop();
+			TimedMethod[] goopPart = Party.GetEnemy().status.Goop();
+			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Slime"}), goopPart[0], goopPart[1]};
 		} else {
 		    return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Slime"}), new TimedMethod(60, "Log", new object[] {"miss"})};
 		}

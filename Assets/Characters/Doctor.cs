@@ -29,22 +29,24 @@ public class Doctor : Character {
 		}
 		if (Party.enemies[index].GetAlive()) {
 			Party.enemies[index].Heal(5);
-			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skill1"}), new TimedMethod(0, "Audio", new object[] {"Heal"}),
-			    new TimedMethod(60, "Log", new object[] {ToString() + " treated " + Party.enemies[index].ToString()})};
+			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Heal"}),
+			    new TimedMethod(60, "Log", new object[] {ToString() + " treated " + Party.enemies[index].ToString()}),
+				new TimedMethod(0, "CharLogSprite", new object[] {"5", Party.enemySlot - 1, "healing", false})};
 		} else {
 			Party.enemies[index].SetAlive(true);
 			Party.enemies[index].Heal(1);
 			Party.enemyCount++;
-			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skill1"}), new TimedMethod(0, "AudioAfter", new object[] {"Tazer", 20}),
-			    new TimedMethod(60, "Log", new object[] {ToString() + " revived " + Party.enemies[index].ToString()})};
+			return new TimedMethod[] {new TimedMethod(0, "AudioAfter", new object[] {"Tazer", 20}),
+			    new TimedMethod(60, "Log", new object[] {ToString() + " revived " + Party.enemies[index].ToString()}),
+				new TimedMethod(0, "CharLogSprite", new object[] {"1", Party.enemySlot - 1, "healing", false})};
 		}
 	}
 	
 	public TimedMethod[] Attack() {
-		Attacks.SetAudio("Knife", 10);
+		Attacks.SetAudio("Knife", 6);
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " used operating tools"}), 
-		    new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 1, 2}), new TimedMethod(0, "Audio", new object[] {"Small Swing"}),
-		    new TimedMethod(0, "StagnantAttack", new object[] {false, 7, 7, GetAccuracy(), true, true, true})};
+		    new TimedMethod(0, "Audio", new object[] {"Small Swing"}),
+		    new TimedMethod(0, "StagnantAttack", new object[] {false, 4, 8, GetAccuracy(), true, true, true})};
 	}
 	
 	public TimedMethod[] Anasthesia() {

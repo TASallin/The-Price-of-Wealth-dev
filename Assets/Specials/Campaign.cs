@@ -1,7 +1,7 @@
 public class Campaign : Special {
 	
 	public Campaign() {
-		name = "Campaign"; description = "Gain 1 power, 1 defense, 2 charge, and 2 guard. If you don't regular attack next turn, face penalties";
+		name = "Campaign"; description = "Gain 1 power, 1 defense, 2 charge, and 2 guard. If you don't basic attack next turn, face penalties";
 	    baseCost = 1; modifier = 0;
 	}
 	
@@ -14,6 +14,10 @@ public class Campaign : Special {
 			castPassive.promise = 2;
 		}
 		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Blah"}), 
-		    new TimedMethod(60, "Log", new object[] {self.ToString() + " promised action"})};
+		    new TimedMethod(60, "Log", new object[] {self.ToString() + " promised action"}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"1", Party.playerSlot - 1, "power", true}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"1", Party.playerSlot - 1, "defense", true}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"2", Party.playerSlot - 1, "charge", true}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"2", Party.playerSlot - 1, "guard", true})};
 	}
 }

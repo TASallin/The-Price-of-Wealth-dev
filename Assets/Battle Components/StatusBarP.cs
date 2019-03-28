@@ -15,14 +15,20 @@ public class StatusBarP : MonoBehaviour {
 	string quirk;
 	string statuses;
 	Character player;
+	public bool frozen;
 	
 	// Use this for initialization
 	void Start () {
 		message.text = "";
+		Check();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		//Check();
+	}
+	
+	public void Check () {
 		try {
 		    player = Party.GetPlayer();
 		    charName = player.GetName() + " (" + player.type + ")";

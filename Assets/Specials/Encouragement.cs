@@ -8,6 +8,7 @@ public class Encouragement : Special {
 		Party.GetPlayer().SetPower(System.Math.Max(Party.GetPlayer().GetPower(), 0));
 		Party.GetPlayer().SetDefense(System.Math.Max(Party.GetPlayer().GetDefense(), 0));
 		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Nullify"}),
-		    new TimedMethod(60, "Log", new object[] {Party.GetPlayer().ToString() + " is feeling better"})};
+		    new TimedMethod(60, "Log", new object[] {Party.GetPlayer().ToString() + " is feeling better"}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"4", Party.playerSlot - 1, "charge", true})};
 	}
 }

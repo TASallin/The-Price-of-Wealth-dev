@@ -5,7 +5,7 @@ public class Accurate : Passive {
 	
 	public override TimedMethod[] CheckLead(bool player) {
 		self.GainAccuracy(1);
-		return new TimedMethod[0];
+		return new TimedMethod[] {new TimedMethod(0, "CharLogSprite", new object[] {"1", self.partyIndex, "accuracy", self.GetPlayer()})};
 	}
 
 	public override TimedMethod[] Initialize(bool player) {

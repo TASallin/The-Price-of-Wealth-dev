@@ -26,14 +26,15 @@ public class Representative : Character {
 		} else {
 			cycle = 1;
 		}
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Steal1"}), new TimedMethod(0, "AudioAfter", new object[] {"Steal", 15}),
+		return new TimedMethod[] {new TimedMethod(0, "AudioAfter", new object[] {"Steal", 15}),
 		    new TimedMethod(60, "Log", new object[] {ToString() + " demanded to see resumes"}), attempt[0]};
 	}
 	
 	public TimedMethod[] Read() {
 		cycle = 2;
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " read the resume, shaking his head"}),
-		    new TimedMethod(0, "Audio", new object[] {"Skip Turn"})};
+		    new TimedMethod(0, "Audio", new object[] {"Skip Turn"}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"SKIP", Party.enemySlot - 1, "skip", false})};
 	}
 	
 	public TimedMethod[] Attack() {
@@ -48,7 +49,7 @@ public class Representative : Character {
 		}
 		Attacks.SetAudio("Slap", 10);
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + message}),
-            new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 5, 6}), new TimedMethod(0, "Audio", new object[] {"Small Swing"}),
+            new TimedMethod(0, "Audio", new object[] {"Small Swing"}),
 		    new TimedMethod(0, "StagnantAttack", new object[] {false, dmg, dmg, GetAccuracy(), true, true, false})};
 	}
 	

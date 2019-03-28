@@ -13,6 +13,6 @@ public class Bandwagon : Quirk {
 		}
 		self.SetPower(enemy.GetPower()); self.SetCharge(enemy.GetCharge());
 		self.SetDefense(enemy.GetDefense()); self.SetGuard(enemy.GetGuard());
-		return new TimedMethod[0];
+		return new TimedMethod[] {new TimedMethod(0, "CharLogSprite", new object[] {"bandwagon", self.partyIndex, "apathy", self.GetPlayer()})};
 	}
 }

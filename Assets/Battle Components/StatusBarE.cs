@@ -19,16 +19,22 @@ public class StatusBarE : MonoBehaviour {
     string defaultText;
 	string specificText;
 	public static bool informed;
+	public bool frozen;
 	// Use this for initialization
 	void Start () {
 		message.text = "";
 		bonusText = "\n";
 		specificText = "";
 		informed = false;
+		Check();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		//sCheck();
+	}
+	
+	public void Check () {
 		try { 
 		    enemy = Party.GetEnemy();
 		    charName = enemy.type;

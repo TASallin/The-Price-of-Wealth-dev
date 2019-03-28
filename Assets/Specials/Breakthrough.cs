@@ -3,10 +3,10 @@ public class Breakthrough : Special {
 	public Breakthrough() {name = "Breakthrough"; description = "Attack and force the enemy to switch"; baseCost = 3; modifier = 0;}
 	
 	public override TimedMethod[] Use() {
-		Attacks.SetAudio("Blunt Hit", 15);
+		Attacks.SetAudio("Blunt Hit", 6);
 		if (Party.enemyCount == 1 || !Attacks.EvasionCheck(Party.GetEnemy(), Party.GetPlayer().GetAccuracy())) {
 			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Small Swing"}), new TimedMethod(0, "StagnantAttack", new object[] {
-		    	true, Party.GetPlayer().GetStrength(), Party.GetPlayer().GetStrength() + 4, Party.GetPlayer().GetAccuracy(), true, true, false})};
+		    	true, Party.GetPlayer().GetStrength(), Party.GetPlayer().GetStrength() + 5, Party.GetPlayer().GetAccuracy(), true, true, false})};
 		}
 		int[] pool = new int[Party.enemyCount - 1];
 		int index = 0;

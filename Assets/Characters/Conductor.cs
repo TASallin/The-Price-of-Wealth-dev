@@ -33,7 +33,11 @@ public class Conductor : Character {
 		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"ConductorCount"}),
 		    new TimedMethod(0, "Audio", new object[] {"Button"}), new TimedMethod(0, "AudioAfter", new object[] {"Button", 15}),
 		    new TimedMethod(0, "AudioAfter", new object[] {"Button", 15}), new TimedMethod(0, "AudioAfter", new object[] {"Button", 15}),
-		    new TimedMethod(60, "Log", new object[] {ToString() + " initiated the performance. All charge up"})};
+		    new TimedMethod(60, "Log", new object[] {ToString() + " initiated the performance. All charge up"}),
+			new TimedMethod(6, "CharLogSprite", new object[] {"5", 0, "charge", false}),
+			new TimedMethod(6, "CharLogSprite", new object[] {"5", 1, "charge", false}),
+			new TimedMethod(6, "CharLogSprite", new object[] {"5", 2, "charge", false}),
+			new TimedMethod(6, "CharLogSprite", new object[] {"5", 3, "charge", false})};
 	}
 	
 	public virtual TimedMethod[] Forte() {
@@ -53,6 +57,10 @@ public class Conductor : Character {
 			}
 		}
 		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Piano"}), new TimedMethod(0, "AudioAfter", new object[] {"Heal", 60}),
+		new TimedMethod(6, "CharLogSprite", new object[] {"3", 0, "healing", false}),
+		new TimedMethod(6, "CharLogSprite", new object[] {"3", 1, "healing", false}),
+		new TimedMethod(6, "CharLogSprite", new object[] {"3", 2, "healing", false}),
+		new TimedMethod(6, "CharLogSprite", new object[] {"3", 3, "healing", false}),
 		new TimedMethod(60, "Log", new object[] {ToString() + " caused a piano. Team was healed"})};
 	}
 	
@@ -73,7 +81,7 @@ public class Conductor : Character {
 			new TimedMethod(0, "Audio", new object[] {"Finale"}),
 		    new TimedMethod(0, "StagnantAttack",new object[] {false, dmg, dmg, GetAccuracy(), true, true, false})};
 		} else {
-			Attacks.SetAudio("Slap", 10);
+			Attacks.SetAudio("Slap", 6);
 			return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " attacked with the baton"}),
 			new TimedMethod(0, "Audio", new object[] {"Small Swing"}),
 		    new TimedMethod(0, "StagnantAttack",new object[] {false, 3, 3, GetAccuracy(), true, true, false})};

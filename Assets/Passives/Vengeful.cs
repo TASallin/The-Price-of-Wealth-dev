@@ -27,11 +27,12 @@ public class Vengeful : Quirk {
 		}
 		while (defeated > count) {
 			count++;
-			self.SetPower(self.GetPower() + 2);
+			self.GainPower(2);
 			used = true;
 		}
 		if (used) {
-			return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {self.ToString() + " will have revenge"})};
+			return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {self.ToString() + " will have revenge"}),
+			    new TimedMethod(0, "CharLogSprite", new object[] {"2", self.partyIndex, "power", player})};
 		} else {
 			return new TimedMethod[0];
 		}

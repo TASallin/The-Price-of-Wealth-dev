@@ -19,6 +19,10 @@ public class Quote : Special {
 			}
 		}
 		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skill1"}), new TimedMethod(0, "AudioAfter", new object[] {"Nullify", 15}),
-		    new TimedMethod(60, "Log", new object[] {Party.GetPlayer().ToString() + " read an inspiring quote"})};
+		    new TimedMethod(0, "Log", new object[] {Party.GetPlayer().ToString() + " read an inspiring quote"}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"Inspired", 0, "regeneration", true}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"Inspired", 1, "regeneration", true}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"Inspired", 2, "regeneration", true}),
+			new TimedMethod(15, "CharLogSprite", new object[] {"Inspired", 3, "regeneration", true})};
 	}
 }

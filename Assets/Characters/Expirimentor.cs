@@ -26,23 +26,23 @@ public class Expirimentor : Researcher {
 		cycle++;
 		if (Attacks.EvasionCycle(this, Party.GetPlayer())) {
 			TimedMethod[] goopPart = Party.GetPlayer().status.Goop();
-			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"ExpirimentorTrap"}),
-    			new TimedMethod(0, "AudioAfter", new object[] {"Powder", 30}), new TimedMethod(60, "Log", new object[] {
+			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Powder"}), new TimedMethod(60, "Log", new object[] {
 				ToString() + " used an overly complex mouse trap"}), goopPart[0], goopPart[1]};
 		} else {
-			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"ExpirimentorTrap"}),
-    			new TimedMethod(0, "Audio", new object[] {"Powder"}), new TimedMethod(60, "Log", new object[] {
+			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Powder"}), new TimedMethod(60, "Log", new object[] {
 				ToString() + " used such an overly complex mouse trap it was easy to avoid"})};
 		}
 	}
 	
 	public TimedMethod[] Attack() {
-		Attacks.SetAudio("Fire Hit", 20);
+		Attacks.SetAudio("Fire Hit", 10);
+		TimedMethod debuffPart = new TimedMethod("Null");
 		if (Attacks.EvasionCheck(Party.GetPlayer(), GetAccuracy())) {
 			Party.GetPlayer().GainCharge(-4);
+			debuffPart = new TimedMethod(0, "CharLogSprite", new object[] {"-4", Party.playerSlot - 1, "charge", true});
 		}
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " swung heated metal"}),
-		    new TimedMethod(0, "Audio", new object[] {"Small Swing"}),
+		    new TimedMethod(0, "Audio", new object[] {"Small Swing"}), debuffPart,
 		    new TimedMethod(0, "StagnantAttack", new object[] {false, 6, 6, GetAccuracy(), true, true, false})};
 	}
 	
@@ -99,8 +99,7 @@ public class Expirimentor : Researcher {
 				}
 			}
 		}
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"ExpirimentorObserve"}),
-    		new TimedMethod(0, "AudioAfter", new object[] {"Clean", 20}), new TimedMethod(0, "AudioAfter", new object[] {"Acid", 15}),
+		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Clean"}), new TimedMethod(0, "AudioAfter", new object[] {"Acid", 15}),
 		    new TimedMethod(60, "Log", new object[] {ToString() + " sprayed a gas around his \"team\""})};
 	}
 	
@@ -108,7 +107,8 @@ public class Expirimentor : Researcher {
 		if (GetGooped()) {
 			status.gooped = false;
 			return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " escaped the goop"}),
-			    new TimedMethod(0, "Audio", new object[] {"Clean"})};
+			    new TimedMethod(0, "Audio", new object[] {"Clean"}),
+				new TimedMethod(0, "CharLogSprite", new object[] {"Cleaned", Party.enemySlot - 1, "goop", false})};
 		}
 		if (Party.enemyCount > 1) {
 			int former = Party.enemySlot;

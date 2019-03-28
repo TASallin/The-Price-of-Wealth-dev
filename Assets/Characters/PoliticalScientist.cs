@@ -33,38 +33,43 @@ public class PoliticalScientist : Character {
 		Democracy castPassive = (Democracy)passive;
 		castPassive.attacked = true;
 		TimedMethod[] attackPart;
+		Attacks.SetAudio("Blunt Hit", 10);
 		if (Party.BagContains(new Metronome())) {
-			attackPart = Attacks.Attack(this, Party.GetEnemy(), strength + 2, strength + 2, GetAccuracy(), true, true, false);
+			attackPart = Attacks.Attack(this, Party.GetEnemy(), strength + 3, strength + 3, GetAccuracy(), true, true, false);
 		} else {
 		    attackPart = Attacks.Attack(this, Party.GetEnemy());
 		}
-		Attacks.SetAudio("Blunt Hit", 15);
-		TimedMethod[] moves = new TimedMethod[attackPart.Length + 4];
-		moves[0] = new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 1, 2});
-		moves[1] = new TimedMethod(0, "Audio", new object[] {"Big Swing"});
-		attackPart.CopyTo(moves, 2);
+		TimedMethod[] moves = new TimedMethod[attackPart.Length + 3];
+		moves[0] = new TimedMethod(0, "Audio", new object[] {"Big Swing"});
+		attackPart.CopyTo(moves, 1);
 		moves[moves.Length - 2] = stunPart[0];
 		moves[moves.Length - 1] = stunPart[1];
 		return moves;
 	}
 	
 	public TimedMethod[] Attack () {
-		Attacks.SetAudio("Blunt Hit", 15);
+		Attacks.SetAudio("Blunt Hit", 10);
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " swung the campaign sign"}),
-		    new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 1, 2}), new TimedMethod(0, "Audio", new object[] {"Big Swing"}),
+		    new TimedMethod(0, "Audio", new object[] {"Big Swing"}),
 		    new TimedMethod(0, "StagnantAttack", new object[] {false, 4, 4, GetAccuracy(), true, true, false})};
 	}
 	
 	public TimedMethod[] Campaign () {
-		power += 1; defense += 1; charge += 2; guard += 2;
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Blah"}), new TimedMethod(0, "AudioAfter", new object[] {"Recruit", 45}),
-		    new TimedMethod(60, "Log", new object[] {ToString() + " campaigned with the promise of action"})};
+		GainPower(1); GainDefense(1); GainCharge(2); GainGuard(2);
+		return new TimedMethod[] {new TimedMethod(0, "AudioAfter", new object[] {"Recruit", 45}),
+		    new TimedMethod(60, "Log", new object[] {ToString() + " campaigned with the promise of action"}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"1", Party.enemySlot - 1, "power", false}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"1", Party.enemySlot - 1, "defense", false}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"2", Party.enemySlot - 1, "charge", false}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"2", Party.enemySlot - 1, "guard", false})};
 	}
 	
 	public TimedMethod[] Debate () {
-	    charge += 4; Party.GetPlayer().GainCharge(4);
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skill1"}), new TimedMethod(0, "AudioAfter", new object[] {"Nullify", 15}),
-		    new TimedMethod(60, "Log", new object[] {ToString() + " began debating. All charge up"})};
+	    GainCharge(4); Party.GetPlayer().GainCharge(4);
+		return new TimedMethod[] {new TimedMethod(0, "AudioAfter", new object[] {"Nullify", 15}),
+		    new TimedMethod(60, "Log", new object[] {ToString() + " began debating"}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"4", Party.enemySlot - 1, "charge", false}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"4", Party.playerSlot - 1, "charge", true})};
 	}
 	
 	public override void CreateDrops () {

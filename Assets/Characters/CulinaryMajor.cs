@@ -24,44 +24,57 @@ public class CulinaryMajor : Character {
 	}
 	
 	public override TimedMethod[] BasicAttack() {
+		TimedMethod[] statusPart = new TimedMethod[] {new TimedMethod("Null"), new TimedMethod("Null")};
 		if (Attacks.EvasionCheck(Party.GetEnemy(), GetAccuracy())) {
+			if (GetPoisoned()) {
+				statusPart[0] = new TimedMethod(0, "CharLogSprite", new object[] {"Cured", Party.playerSlot - 1,  "poison", true});
+			}
+			if (GetGooped()) {
+				statusPart[1] = new TimedMethod(0, "CharLogSprite", new object[] {"Cleaned", Party.playerSlot - 1,  "goop", true});
+			}
 			status.poisoned = 0;
 			status.gooped = false;
 		}
 		TimedMethod[] attackPart;
+		Attacks.SetAudio("Knife", 20);
 		if (Party.BagContains(new Metronome())) {
-			attackPart = Attacks.Attack(this, Party.GetEnemy(), strength + 2, strength + 2, GetAccuracy(), true, true, false);
+			attackPart = Attacks.Attack(this, Party.GetEnemy(), strength + 3, strength + 3, GetAccuracy(), true, true, false);
 		} else {
 		    attackPart = Attacks.Attack(this, Party.GetEnemy());
 		}
-		Attacks.SetAudio("Knife", 20);
-		TimedMethod[] moves = new TimedMethod[attackPart.Length + 2];
-		moves[0] = new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 3, 4});
-		moves[1] = new TimedMethod(0, "Audio", new object[] {"Knife Throw"});
-		attackPart.CopyTo(moves, 2);
+		TimedMethod[] moves = new TimedMethod[attackPart.Length + 3];
+		moves[0] = new TimedMethod(0, "Audio", new object[] {"Knife Throw"});
+		moves[1] = statusPart[0];
+		moves[2] = statusPart[1];
+		attackPart.CopyTo(moves, 3);
 		return moves;
 	}
 	
 	public TimedMethod[] Attack () {
 		Attacks.SetAudio("Knife", 20);
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " threw a cooking knife"}),
-		    new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 3, 4}), new TimedMethod(0, "Audio", new object[] {"Knife Throw"}),
+		    new TimedMethod(0, "Audio", new object[] {"Knife Throw"}),
 		    new TimedMethod(0, "Attack", new object[] {false})};
 	}
 	
 	public TimedMethod[] Eat (string food) {
 		string message = "";
+		TimedMethod statPart = new TimedMethod("Null");
 		switch (food) {
-			case "steak": message = ToString() + " ate the steak. Attack increased + health up"; power += 2;
+			case "steak": message = ToString() + " ate the steak. Attack increased + health up"; GainPower(1);
+			    statPart = new TimedMethod(0, "CharLogSprite", new object[] {"1", Party.enemySlot - 1, "power", false}); 
 			    break;
-			case "fish": message = ToString() + " ate the fish. Accuracy increased + health up"; accuracy += 2;
+			case "fish": message = ToString() + " ate the fish. Accuracy increased + health up"; GainAccuracy(1);
+			    statPart = new TimedMethod(0, "CharLogSprite", new object[] {"2", Party.enemySlot - 1, "accuracy", false}); 
 			    break;
-			case "bread": message = ToString() + " ate the bread. Defense increased + health up"; defense += 2;
+			case "bread": message = ToString() + " ate the bread. Defense increased + health up"; GainDefense(1);
+			    statPart = new TimedMethod(0, "CharLogSprite", new object[] {"1", Party.enemySlot - 1, "defense", false}); 
 			    break;
 		}
-		Heal(5);
+		Heal(4);
 		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Eat"}), new TimedMethod(0, "AudioAfter", new object[] {"Heal", 30}),
-		    new TimedMethod(60, "Log", new object[] {message})};
+		    new TimedMethod(60, "Log", new object[] {message}), 
+			new TimedMethod(0, "CharLogSprite", new object[] {"4", Party.enemySlot - 1, "healing", false}), statPart};
 	}
 	
 	public TimedMethod[] Feast () {
@@ -70,9 +83,13 @@ public class CulinaryMajor : Character {
 				c.Heal(3);
 			}
 		}
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skill2"}), new TimedMethod(0, "AudioAfter", new object[] {"Eat", 10}),
+		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " distributed snacks. Party health up"}),
+		    new TimedMethod(0, "AudioAfter", new object[] {"Eat", 10}),
 		    new TimedMethod(0, "AudioAfter", new object[] {"Heal", 30}),
-		    new TimedMethod(60, "Log", new object[] {ToString() + " distributed snacks. Party health up"})};
+			new TimedMethod(6, "CharLogSprite", new object[] {"3", 0, "healing", false}),
+			new TimedMethod(6, "CharLogSprite", new object[] {"3", 1, "healing", false}),
+			new TimedMethod(6, "CharLogSprite", new object[] {"3", 2, "healing", false}),
+			new TimedMethod(6, "CharLogSprite", new object[] {"3", 3, "healing", false})};
 	}
 	
 	public override void CreateDrops() {

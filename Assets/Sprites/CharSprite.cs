@@ -17,7 +17,10 @@ public class CharSprite : MonoBehaviour {
 	static int storedX;
 	static int storedY;
 	Queue<string> backlog;
+	Queue<string> spritelog;
 	int delay;
+	int hp;
+	public bool freezeHealth;
 	
 	// Use this for initialization
 	void Start () {
@@ -45,7 +48,10 @@ public class CharSprite : MonoBehaviour {
 		}
 		moveTo = gameObject.transform.localPosition;
 		backlog = new Queue<string>();
+		spritelog = new Queue<string>();
 		delay = 0;
+		freezeHealth = false;
+		HPActual();
 	}
 	
 	// Update is called once per frame
@@ -56,14 +62,18 @@ public class CharSprite : MonoBehaviour {
 				gameObject.transform.localPosition.y + System.Math.Max(System.Math.Min(5, moveTo.y - gameObject.transform.localPosition.y), -5),
 				gameObject.transform.localPosition.z + System.Math.Max(System.Math.Min(5, moveTo.z - gameObject.transform.localPosition.z), -5));
 		}
-		if (delay == 20) {
+		if (delay == 10) {
 			charText.text = "";
 		} else if (delay == 0 && backlog.Count > 0) {
 			charText.text = backlog.Dequeue();
-			delay = 80;
+			spritelog.Dequeue();
+			delay = 40;
 		}
 		if (delay > 0) {
 			delay--;
+		}
+		if (!freezeHealth) {
+		    HPActual();
 		}
 		if (player && Party.members[slot] != null) {
 		    healthBar.transform.localScale = new Vector3((float)Party.members[slot].GetHealth() / (float)Party.members[slot].GetMaxHP(), 1, 1);
@@ -78,6 +88,12 @@ public class CharSprite : MonoBehaviour {
 	
 	public void Log (string s) {
 		backlog.Enqueue(s);
+		spritelog.Enqueue("none");
+	}
+	
+	public void LogSprite (string text, string sprite) {
+		backlog.Enqueue(text);
+		spritelog.Enqueue(sprite);
 	}
 	
 	public static void Reset () {
@@ -85,5 +101,18 @@ public class CharSprite : MonoBehaviour {
 		displaced = null;
 		storedX = 0;
 		storedY = 0;
+	}
+	
+	public void HPActual() {
+		if (player && Party.members[slot] != null) {
+			hp = Party.members[slot].GetHealth();
+		} else if (Party.enemies[slot] != null) {
+			hp = Party.enemies[slot].GetHealth();
+		}
+	}
+	
+	public void ChangeHP(int damage) {
+		freezeHealth = true;
+		hp = hp - damage;
 	}
 }

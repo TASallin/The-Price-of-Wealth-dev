@@ -18,7 +18,7 @@ public class Airstrike : Passive {
 			Attacks.SetAudio("L Explosion", 0);
 			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Missile"}),
 			    new TimedMethod(60, "Log", new object[] {"The missile has landed!"}),
-			    new TimedMethod(60, "StagnantAttack", new object[] {player, 15, 15, 30, false, false, false})};
+			    new TimedMethod(0, "StagnantAttack", new object[] {player, 15, 15, 30, true, true, false})};
 		} else {
 			return new TimedMethod[0];
 		}

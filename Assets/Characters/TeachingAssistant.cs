@@ -21,23 +21,24 @@ public class TeachingAssistant : Character {
 	public TimedMethod[] Attack () {
 		Attacks.SetAudio("Blunt Hit", 20);
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " tossed a paperweight"}),
-		   new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 1, 2}), new TimedMethod(0, "Audio", new object[] {"Missile"}),
+		    new TimedMethod(0, "Audio", new object[] {"Missile"}),
 	    	new TimedMethod(0, "StagnantAttack", new object[] {false, 2, 5, GetAccuracy(), true, true, false})};
 	}
 	
 	public TimedMethod[] Grade () {
 		if (Attacks.EvasionCycle(this, Party.GetPlayer())) {
 		    Party.UseSP(3);
-			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skill1"}), new TimedMethod(0, "Audio", new object[] {"Poison"}),
+			return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Poison"}),
 		    new TimedMethod(60, "Log", new object[] {ToString() + " returned grades. -3 SP"})};
 		}
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skill1"}), new TimedMethod(0, "Audio", new object[] {"Poison"}),
+		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Poison"}),
 		    new TimedMethod(60, "Log", new object[] {ToString() + " returned grades, but " + Party.GetPlayer().ToString() + " didn't care"})};
 	}
 	
 	public TimedMethod[] Laziness () {
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " is procrastinating"}),
-		    new TimedMethod(0, "Audio", new object[] {"Skip Turn"})};
+		    new TimedMethod(0, "Audio", new object[] {"Skip Turn"}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"SKIP", Party.enemySlot - 1, "skip", false})};
 	}
 	
 	public override void CreateDrops () {

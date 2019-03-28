@@ -18,9 +18,8 @@ public class PepTalk : Passive {
 			count = countE;
 		}
         if (lead.GetCharge() < count) {
-			lead.SetCharge(lead.GetCharge() + 1);
-			return new TimedMethod[] {new TimedMethod("GetPlayer"), new TimedMethod("GetEnemy"), new TimedMethod(60, "Log", new object[] {
-				lead.ToString() + " was inspired"})}; 
+			lead.GainCharge(1);
+			return new TimedMethod[] {new TimedMethod(0, "CharLogSprite", new object[] {"1", Party.playerSlot - 1, "charge", player})}; 
 		}
 		return new TimedMethod[0];
     }

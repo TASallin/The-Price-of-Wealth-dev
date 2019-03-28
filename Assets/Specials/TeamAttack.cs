@@ -7,7 +7,7 @@ public class TeamAttack : Special {
 		Attacks.SetAudio("Blunt Hit", 15);
 		TimedMethod[] moves = new TimedMethod[Party.playerCount + 2];
 		moves[0] = new TimedMethod(60, "Log", new object[] {Party.members[i].ToString() + " led a team attack"});
-		moves[1] = new TimedMethod(0, "Audio", new object[] {"Skill2"});
+		moves[1] = new TimedMethod(0, "Audio", new object[] {"Whistle"});
 		int index = 0;
 		int count = 1;
 		Character current;

@@ -4,7 +4,7 @@ public class Charge : Special {
     	baseCost = 3; modifier = 0;}
 	
 	public override TimedMethod[] Use () {
-		Attacks.SetAudio("Blunt Hit", 20);
+		Attacks.SetAudio("Blunt Hit", 15);
 		if (Attacks.EvasionCheck(Party.GetEnemy(), Party.GetPlayer().GetAccuracy()) && Party.enemyCount > 1) {
 			//Character second = Party.enemies[0];
 			TimedMethod[] moves = new TimedMethod[Party.enemyCount + 1];

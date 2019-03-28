@@ -156,7 +156,8 @@ public static class Party {
 		for (int i = 0; i < 4; i++) {
 			if (enemies[i] == null || !enemies[i].GetAlive()) {
 				enemies[i] = c;
-				c.partyIndex = 4 + i;
+				//c.partyIndex = 4 + i;
+				c.partyIndex = i;
 				enemyCount++;
 				if (turn > 0) {
 					c.GetPassive().Initialize(false);
@@ -253,7 +254,7 @@ public static class Party {
 					    playerCount++;
 					    //return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"Your teammates used the defibrilator"})};
 				    } else {
-    				    return new TimedMethod[] {new TimedMethod(60, "Lose")};
+    				    return new TimedMethod[] {new TimedMethod(120, "Lose")};
 				    }
 				}
 			}
@@ -283,7 +284,7 @@ public static class Party {
 					playerCount++;
 					return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {"Your teammates used the defibrilator"})};
 				} else {
-    				return new TimedMethod[] {new TimedMethod(60, "Lose")};
+    				return new TimedMethod[] {new TimedMethod(120, "Lose")};
 				}
 			} else {
 				//members[playerSlot - 1] = null;

@@ -13,11 +13,9 @@ public class Unstable : Quirk {
 	
 	public override TimedMethod[] Initialize (bool player) {
 		if (new System.Random().Next(2) == 0) {
-			self.status.Poison(2);
-			return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {self.ToString() + " is poisoned"})};
+			return self.status.Poison(2);
 		} else {
-		    self.status.Regenerate(2);
-			return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {self.ToString() + " is regenerating"})};
+			return self.status.Regenerate(2);
 		}
 	}
 }

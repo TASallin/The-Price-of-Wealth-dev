@@ -4,7 +4,7 @@ public class MathMajor : Character {
 	int answer;
 	
 	public MathMajor() {
-        health = 14; maxHP = 14; strength = 2; power = 0; charge = 0; defense = 0; guard = 0;
+        health = 18; maxHP = 18; strength = 2; power = 0; charge = 0; defense = 0; guard = 0;
 		baseAccuracy = 20; accuracy = 20; dexterity = 3; evasion = 0; type = "Math Major"; passive = new Observant(this);
 		quirk = Quirk.GetQuirk(this); special = new Factorial(); special2 = new Pi(); player = false; champion = false; recruitable = true;
 		factorial = 0; answer = 1; CreateDrops(); attackEffect = "gain 1 accuracy";
@@ -20,26 +20,27 @@ public class MathMajor : Character {
 	
 	public override TimedMethod[] BasicAttack() {
 		TimedMethod[] attackPart;
+		Attacks.SetAudio("Fire Hit", 6);
 		if (Party.BagContains(new Metronome())) {
-			attackPart = Attacks.Attack(this, Party.GetEnemy(), strength + 2, strength + 2, GetAccuracy(), true, true, false);
+			attackPart = Attacks.Attack(this, Party.GetEnemy(), strength + 3, strength + 3, GetAccuracy(), true, true, false);
 		} else {
 		    attackPart = Attacks.Attack(this, Party.GetEnemy());
 		}
-		accuracy += 1;
-		Attacks.SetAudio("Fire Hit", 6);
+		GainAccuracy(1);
 		TimedMethod[] moves = new TimedMethod[attackPart.Length + 2];
-		moves[0] = new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 5, 6});
-		moves[1] = new TimedMethod(0, "AudioAfter", new object[] {"Laser Shot", 30});
+		moves[0] = new TimedMethod(0, "Audio", new object[] {"Laser Shot"});
+		moves[1] = new TimedMethod(0, "CharLogSprite", new object[] {"1", Party.playerSlot - 1, "accuracy", true});
 		attackPart.CopyTo(moves, 2);
 		return moves;
 	}
 	
 	public override TimedMethod[] EnemyTurn () {
-		TimedMethod[] extra = status.Check();
-		if (GetAsleep() || GetStunned()) {
+		//TimedMethod[] extra = status.Check();
+		if (GetAsleep() || GetStunned() || GetPassing()) {
 			factorial = 0;
 			answer = 1;
-			return extra;
+			return new TimedMethod[] {new TimedMethod(0, "CharLogSprite", new object[] {"SKIP", Party.enemySlot - 1, "skip", false}),
+			    new TimedMethod(0, "Audio", new object[] {"Skip Turn"})};
 		} else { 
 		    return AI();
 		}
@@ -47,8 +48,7 @@ public class MathMajor : Character {
 	
 	public TimedMethod[] Prepare () {
 		factorial = 1;
-		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skill3"}),
-		    new TimedMethod(0, "Audio", new object[] {"Recursion"}), 
+		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Recursion"}), 
 			new TimedMethod(60, "Log", new object[] {ToString() + " initiated the factorial function"})};
 	}
 	
@@ -57,7 +57,7 @@ public class MathMajor : Character {
 		answer = answer * factorial;
 		factorial++;
 		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {ToString() + " attacked"}),
-		    new TimedMethod(0, "AudioNumbered", new object[] {"Attack", 5, 6}), new TimedMethod(0, "AudioAfter", new object[] {"Laser Shot", 30}),
+		    new TimedMethod(0, "Audio", new object[] {"Laser Shot"}),
 		    new TimedMethod(0, "StagnantAttack", new object[] {false, answer, answer, GetAccuracy(), true, true, false})};
 	}
 	

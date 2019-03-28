@@ -13,7 +13,7 @@ public class Observant : Passive {
 		}
 		if (atkr.GetAccuracy() <= targ.GetEvasion()) {
 			atkr.GainAccuracy(3);
-			return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {atkr.ToString() + " observed " + targ.ToString() + "'s movements"})};
+			return new TimedMethod[] {new TimedMethod(0, "CharLogSprite", new object[] {"3", Party.playerSlot - 1, "accuracy", player})};
 		} else {
 			return new TimedMethod[0];
 		}

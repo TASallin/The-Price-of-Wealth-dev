@@ -61,4 +61,18 @@ public class CharSprites : MonoBehaviour {
 	public void Log(string message, int index) {
 		sprites[index].GetComponent<CharSprite>().Log(message);
 	}
+	
+	public void LogSprite(string message, int index, string sprite) {
+		sprites[index].GetComponent<CharSprite>().LogSprite(message, sprite);
+	}
+	
+	public void UnfreezeAll() {
+		foreach (GameObject sprite in sprites) {
+			sprite.GetComponent<CharSprite>().freezeHealth = false;
+		}
+	}
+	
+	public void ChangeHP(int damage, int index) {
+		sprites[index].GetComponent<CharSprite>().ChangeHP(damage);
+	}
 }

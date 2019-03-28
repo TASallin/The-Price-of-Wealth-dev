@@ -12,7 +12,8 @@ public class Triage : Special {
 			Party.members[i].SetHealth(System.Math.Max(Party.members[i].GetHealth(), Party.members[i].GetMaxHP() / 2));
 		}
 		return new TimedMethod[] {new TimedMethod(0, "Audio", new object[] {"Skill1"}), new TimedMethod(0, "Audio", new object[] {"Heal"}),
-		    new TimedMethod(60, "Log", new object[] {Party.GetPlayer().ToString() + " performed tiring healing"})};
+		    new TimedMethod(60, "Log", new object[] {Party.GetPlayer().ToString() + " performed tiring healing"}),
+			new TimedMethod(0, "CharLogSprite", new object[] {"1/2 MAX", i, "regeneration", true})};
 	}
 	
 	//public override void UseOutOfCombat () {
