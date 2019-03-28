@@ -4,19 +4,9 @@ public class Sword : Textbook {
 	
 	public override TimedMethod[] Use() {
 		Attacks.SetAudio("Sword", 15);
-        if (Attacks.EvasionCheck(Party.GetEnemy(), Party.GetPlayer().GetAccuracy())) {
-            return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {
-            Party.GetPlayer().GetName() + " attacked with the sword. It broke immediately"}),
-            new TimedMethod(0, "Audio", new object[] {"Big Swing"}), new TimedMethod(0, "StagnantAttack", new object[] {
-            true, Party.GetPlayer().GetStrength() + 7, Party.GetPlayer().GetStrength() + 11, Party.GetPlayer().GetAccuracy(), true, true, false})};
-        } else
-        {
-            Party.AddItem(this);
-            return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {
-            Party.GetPlayer().GetName() + " attacked with the sword." }) ,
-            new TimedMethod(0, "Audio", new object[] {"Big Swing"}), new TimedMethod(0, "StagnantAttack", new object[] {
-            true, Party.GetPlayer().GetStrength() + 7, Party.GetPlayer().GetStrength() + 11, Party.GetPlayer().GetAccuracy(), true, true, false})};
-        }
-		
+		return new TimedMethod[] {new TimedMethod(60, "Log", new object[] {
+			Party.GetPlayer().GetName() + " attacked with the sword. It broke immediately"}),
+		    new TimedMethod(0, "Audio", new object[] {"Big Swing"}), new TimedMethod(0, "StagnantAttack", new object[] {
+			true, Party.GetPlayer().GetStrength() + 7, Party.GetPlayer().GetStrength() + 11, Party.GetPlayer().GetAccuracy(), true, true, false})};
 	}
 }
